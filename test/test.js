@@ -1,15 +1,16 @@
 "use strict";
 
-require("../src/util");
+require("../src/feedforwardNeuralNetworks");
+var Matrix = require('ml-matrix');
 
-describe('Utilities', function() {
-    it('Sigmoid function', function() {
-        var result = Util.sigmoid(3);
-        result.should.be.approximately(0.9525, 1e-4);
-    });
+describe('Feedforward Neural Networks', function() {
+    it('Training the neural network with XOR', function () {
+        var X = Matrix([[0, 0], [0, 1], [1, 0], [1, 1]]);
 
-    it('sigmoid gradient function', function() {
-        var result = Util.sigmoidGradient(3);
-        result.should.be.approximately(0.04517, 1e-4);
+        var labels = [0, 1, 1, 0];
+
+        var xorNeuralNetwork = new FeedforwardNeuralNetworks();
+        xorNeuralNetwork.train(X, labels, 0.01, 0.0, 2, 20, 6);
+        xorNeuralNetwork.predict([0, 0], [1, 0]);
     });
 });

@@ -1,6 +1,7 @@
-var Util = require('util');
+require("../src/util");
+var Matrix = require('ml-matrix');
 
-var FeedforwardNeuralNetworks = function() {
+FeedforwardNeuralNetworks = function() {
 
     var X;
     var y;
@@ -8,18 +9,26 @@ var FeedforwardNeuralNetworks = function() {
     var alpha;
     var lambda;
 
-    function costFunction(lambdaArg, numberOfLabels) {
+    function costFunction(X, y, lambdaArg, numberOfLabels) {
+        var sigmoid = function (value) {
+            return 1.0 / (1 + Math.exp(-value));
+        };
+
+        var sigmoidGradient = function (value) {
+            return sigmoid(value) * (1 - sigmoid(value));
+        };
+
         lambda = lambdaArg;
 
         var m = X.rows;
-        var cost = 0.0;
+        var cost;
 
-        var X = X.addColumn(0, Matrix.ones(m, 1));
+        X = X.addColumn(0, Matrix.ones(m, 1));
 
-        var a2 = Theta[0].mmul(X.transpose()).apply(Util.sigmoid);
+        var a2 = Theta[0].mmul(X.transpose()).apply();
         a2 = a2.transpose().addColumn(0, Matrix.ones(m, 1));
 
-        var a3 = Theta[1].mmul(a2.transpose()).apply(Util.sigmoid);
+        var a3 = Theta[1].mmul(a2.transpose()).apply(sigmoid);
         a3 = a3.transpose();
 
         var yk = Matrix.zeros(numberOfLabels, m);
@@ -77,15 +86,15 @@ var FeedforwardNeuralNetworks = function() {
         X = XArg;
         y = yArg;
         var m = XArg.rows;
+        var features = XArg.columns;
 
-        Theta[0] = randomInitialzeTheta(XArg, hiddenLayerSize); // TODO: be careful
+        Theta[0] = randomInitialzeTheta(features, hiddenLayerSize); // TODO: be careful
         Theta[1] = randomInitialzeTheta(hiddenLayerSize, numberOfLabels);
 
-        var H = Theta.transpose().mmul(X.transpose());
         var result;
 
         for(var i = 0; i < iterations; ++i) {
-            result = costFunction(lambdaArg, numberOfLabels);
+            result = costFunction(X, y, lambdaArg, numberOfLabels);
             Theta[0] = Theta[0].addS((alpha / m) * result.grad[0]);
             Theta[1] = Theta[1].addS((alpha / m) * result.grad[1]);
         }
@@ -102,4 +111,5 @@ var FeedforwardNeuralNetworks = function() {
         return h2.maxRowIndex(0);
     };
 
+    return this;
 };
