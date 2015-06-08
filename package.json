@@ -1,5 +1,5 @@
 {
-  "name": "feedforward neural networks",
+  "name": "feedforwardNeuralNetworks",
   "version": "1.0.0",
   "description": "feedforward neural networks library",
   "main": "src/index.js",
@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/mljs/feedforwardNeuralNetworks",
   "dependencies": {
-    "mathjs": "latest"
+    "mathjs": "latest",
+    "ml-matrix": "0.0.3"
   },
   "devDependencies": {
     "browserify": "^8.1.3",
