@@ -1,0 +1,30 @@
+{
+  "name": "feedforward neural networks",
+  "version": "1.0.0",
+  "description": "feedforward neural networks librar",
+  "keywords": [
+    "neural",
+    "networks",
+    "feedforward",
+    "machine",
+    "learning"
+  ],
+  "main": [
+    "dist/feedforwardneuralnetworks.js",
+    "dist/feedforwardneuralnetworks.min.js"
+  ],
+  "authors": [
+    "Jefferson Hernández"
+  ],
+  "homepage": "https://github.com/mljs/feedforwardneuralnetworks",
+  "license": "MIT",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "ignore": [
+    "/*",
+    "!dist/*"
+  ]
+}
