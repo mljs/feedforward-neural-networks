@@ -70,15 +70,15 @@ var FeedforwardNeuralNetworks = function() {
     this.train = function(XArg, yArg, learningRate, lambdaArg, numberOfLabels, iterations) {
         X = XArg;
         y = yArg;
-        alpha = learningRate;
+
 
         var H = Theta.transpose().mmul(X.transpose());
         var result;
 
         for(var i = 0; i < iterations; ++i) {
             result = this.costFunction(lambdaArg, numberOfLabels);
-
-
+            Theta[0] = Theta[0].addS((alpha / m) * result.grad[0]);
+            Theta[1] = Theta[1].addS((alpha / m) * result.grad[1]);
         }
 
 
