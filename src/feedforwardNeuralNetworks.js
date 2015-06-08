@@ -8,7 +8,7 @@ var FeedforwardNeuralNetworks = function() {
     var alpha;
     var lambda;
 
-    this.costFunction = function(lambdaArg, numberOfLabels) {
+    function costFunction(lambdaArg, numberOfLabels) {
         lambda = lambdaArg;
 
         var m = X.rows;
@@ -65,22 +65,41 @@ var FeedforwardNeuralNetworks = function() {
         // apply regularization term to the gradient
 
         return {cost: cost, grad: grad};
-    };
+    }
 
-    this.train = function(XArg, yArg, learningRate, lambdaArg, numberOfLabels, iterations) {
+    function randomInitialzeTheta(labelsIn, labelsOut) {
+        var epsilonRange = 0.12; // values around
+
+        return Matrix.rand(labelsOut, labelsIn).mulS(2).mulS(epsilonRange).addS(-epsilonRange);
+    }
+
+    this.train = function(XArg, yArg, learningRate, lambdaArg, numberOfLabels, iterations, hiddenLayerSize) {
         X = XArg;
         y = yArg;
+        var m = XArg.rows;
 
+        Theta[0] = randomInitialzeTheta(XArg, hiddenLayerSize); // TODO: be careful
+        Theta[1] = randomInitialzeTheta(hiddenLayerSize, numberOfLabels);
 
         var H = Theta.transpose().mmul(X.transpose());
         var result;
 
         for(var i = 0; i < iterations; ++i) {
-            result = this.costFunction(lambdaArg, numberOfLabels);
+            result = costFunction(lambdaArg, numberOfLabels);
             Theta[0] = Theta[0].addS((alpha / m) * result.grad[0]);
             Theta[1] = Theta[1].addS((alpha / m) * result.grad[1]);
         }
-
-
     };
+
+    this.predict = function(X) {
+        var m = X.rows;
+
+        var predictions = Matrix.zeros(m, 1);
+
+        var h1 = X.addColumn(0, Matrix.ones(m, 1)).mmul(Theta[0].transpose()).apply(Util.sigmoid);
+        var h2 = h1.addColumn(0, Matrix.ones(m, 1)).mmul(Theta[1].transpose()).apply(Util.sigmoid);
+
+        return h2.maxRowIndex(0);
+    };
+
 };
