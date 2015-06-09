@@ -6,11 +6,10 @@ FeedforwardNeuralNetworks = function() {
     var X;
     var y;
     var Theta = new Array(2);
-    var alpha;
     var lambda;
 
     function Sigmoid(value) {
-        return 1.0 / (1 + Math.exp(value));
+        return 1.0 / (1 + Math.exp(-value));
     }
 
     function SigmoidGradient(value) {
@@ -24,7 +23,12 @@ FeedforwardNeuralNetworks = function() {
     };
 
     var sigmoidGradient = function(i, j) {
-        this[i][j] = Sigmoid(this[i][j]);
+        this[i][j] = SigmoidGradient(this[i][j]);
+        return this;
+    };
+
+    var logArray = function(i, j) {
+        this[i][j] = Math.log(this[i][j]);
         return this;
     };
 
@@ -51,7 +55,7 @@ FeedforwardNeuralNetworks = function() {
 
         var negativeYk = yk.mulS(-1);
 
-        cost = (1 / m) * (negativeYk.transpose().mulM(a3.apply(Math.log)).subM
+        cost = (1 / m) * (negativeYk.transpose().mulM(a3.apply(logArray)).subM
             ((negativeYk.addS(1).transpose().mulM(a3.mulS(-1).addS(1))))).sum();
 
         // Apply regularization
@@ -130,8 +134,9 @@ FeedforwardNeuralNetworks = function() {
 
         for(var i = 0; i < iterations; ++i) {
             result = costFunction(X, y, lambdaArg, numberOfLabels);
-            Theta[0].add(result.grad[0].mulS(learningRate / m));
-            Theta[1].add(result.grad[1].mulS(learningRate / m));
+            console.log("cost: " + result.cost);
+            Theta[0].add(result.grad[0].mulS(-learningRate / m));
+            Theta[1].add(result.grad[1].mulS(-learningRate / m));
         }
     };
 
