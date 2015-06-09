@@ -55,7 +55,6 @@ FeedforwardNeuralNetworks = function() {
             ((negativeYk.addS(1).transpose().mulM(a3.mulS(-1).addS(1))))).sum();
 
         // Apply regularization
-        // TODO: review the cost function apply function
 
         var grad = new Array(2);
         grad[0] = Matrix.zeros(Theta[0].rows, Theta[0].columns);
@@ -94,7 +93,21 @@ FeedforwardNeuralNetworks = function() {
         X = X.removeColumn(0);
 
         // TODO: apply regularization term to the gradient
+        var gradBiasTerm = new Array(2);
 
+        // save the bias terms because we don't want to apply the regularization to those terms
+        gradBiasTerm[0] = grad[0].getColumn(0);
+        gradBiasTerm[1] = grad[1].getColumn(0);
+
+        grad[0] = grad[0].removeColumn(0);
+        grad[1] = grad[1].removeColumn(0);
+
+        grad[0].add(Theta[0].subMatrix(0, Theta[0].rows - 1, 1, Theta[0].columns - 1).mulS(lambda / m));
+        grad[1].add(Theta[1].subMatrix(0, Theta[1].rows - 1, 1, Theta[1].columns - 1).mulS(lambda / m));
+
+        // add again the regularization terms to gradient vector
+        grad[0] = grad[0].addColumn(0, gradBiasTerm[0]);
+        grad[1] = grad[1].addColumn(0, gradBiasTerm[1]);
         return {cost: cost, grad: grad};
     };
 
