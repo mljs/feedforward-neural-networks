@@ -5,17 +5,33 @@ var Matrix = require('ml-matrix');
 
 describe('Feedforward Neural Networks', function () {
     it('Training the neural network with XOR', function () {
-        var X = Matrix([[0, 0], [0, 1], [1, 0], [1, 1]].reverse());
+        var X = Matrix([[0, 0], [0, 1], [1, 0], [1, 1]]);
 
         var labels = [0, 1, 1, 0];
+        /*for(var i = 1e-5; i < 2; i *= 2) {
+            for(var j = 1e-5; j < 2; j *= 2) {
+                var xorNeuralNetwork = new FeedforwardNeuralNetworks();
+                xorNeuralNetwork.train(X, labels, i, j, 2, 1500, 6);
+                var result = xorNeuralNetwork.predict(Matrix([[1, 1], [0, 1], [1, 0], [0, 0]]));
+
+                if(!(result[0][0] > result[0][1])) continue;
+                if(result[1][0] > result[1][1]) continue;
+                if(result[2][0] > result[2][1]) continue;
+                if(!(result[3][0] > result[3][1])) continue;
+
+                console.log("i: " + i + " j: " + j);
+            }
+        }*/
 
         var xorNeuralNetwork = new FeedforwardNeuralNetworks();
-        xorNeuralNetwork.train(X, labels, 0.8, 0.5, 2, 1500, 15);
+        xorNeuralNetwork.train(X, labels, 0.01, 0.3, 2, 3000, 2);
         var result = xorNeuralNetwork.predict(Matrix([[1, 1], [0, 1], [1, 0], [0, 0]]));
 
-        (result[0][0] > result[0][1]).should.be.equal(false);
+        console.log(result);
+
+        (result[0][0] < result[0][1]).should.be.equal(true);
         (result[1][0] > result[1][1]).should.be.equal(true);
         (result[2][0] > result[2][1]).should.be.equal(true);
-        (result[3][0] > result[3][1]).should.be.equal(false);
+        (result[3][0] < result[3][1]).should.be.equal(true);
     });
 });
