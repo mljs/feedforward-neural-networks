@@ -8,14 +8,14 @@ FeedforwardNeuralNetworks = function() {
     var Theta = new Array(2);
     var lambda;
 
-    function Sigmoid(value) {
+    var Sigmoid = function Sigmoid(value) {
         return 1.0 / (1 + Math.exp(-value));
-    }
+    };
 
-    function SigmoidGradient(value) {
+    var SigmoidGradient = function SigmoidGradient(value) {
         var sig = Sigmoid(value);
         return sig * (1 - sig);
-    }
+    };
 
     var sigmoid = function (i, j) {
         this[i][j] = Sigmoid(this[i][j]);
@@ -42,7 +42,6 @@ FeedforwardNeuralNetworks = function() {
         var transposeX = X.transpose();
 
         var a2 = (Theta[0].mmul(transposeX)).apply(sigmoid);
-
         a2 = a2.transpose().addColumn(0, Matrix.ones(m, 1));
 
         var a3 = Theta[1].mmul(a2.transpose()).apply(sigmoid);
@@ -53,42 +52,40 @@ FeedforwardNeuralNetworks = function() {
             yk[y[i]][i] = 1;
         }
 
-        var negativeYk = yk.mulS(-1);
+        var negativeYk = yk.clone().mulS(-1);
 
-        cost = (1 / m) * (negativeYk.transpose().mulM(a3.apply(logArray)).subM
-            ((negativeYk.addS(1).transpose().mulM(a3.mulS(-1).addS(1))))).sum();
+        cost = (1 / m) * (negativeYk.transpose().mulM(a3.clone().apply(logArray)).subM
+            ((negativeYk.clone().addS(-1).transpose().mulM(a3.mulS(-1).addS(1))))).sum();
 
-        // Apply regularization
+        // TODO: Apply regularization
 
         var grad = new Array(2);
         grad[0] = Matrix.zeros(Theta[0].rows, Theta[0].columns);
         grad[1] = Matrix.zeros(Theta[1].rows, Theta[1].columns);
-
-        negativeYk.neg();
 
         // Doing backpropagation
         for(i = 0; i < m; ++i) {
             var a1 = Matrix.columnVector(transposeX.getColumn(i));
             var z2 = Theta[0].mmul(a1);
 
-            a2 = z2.apply(sigmoid);
+            a2 = z2.clone().apply(sigmoid);
             a2 = a2.transpose().addColumn(0, Matrix.ones(1, 1));
 
             var z3 = Theta[1].mmul(a2.transpose());
-            a3 = z3.apply(sigmoid);
+            a3 = z3.clone().apply(sigmoid);
 
             var delta3 = a3.addColumnVector(Matrix.columnVector(negativeYk.getColumn(i)));
-            z2 = z2.addRow(0, Matrix.ones(1, 1));
-
+            z2.addRow(0, Matrix.ones(1, 1));
 
             var delta2 = Theta[1].transpose().mmul(delta3).mulM(
-                            z2.apply(sigmoidGradient));
+                            z2.clone().apply(sigmoidGradient));
             delta2 = delta2.removeRow(0);
 
             // TODO: be careful applying the gradient
             grad[0] = grad[0].addM(delta2.mmul(a1.transpose()));
             grad[1] = grad[1].addM(delta3.mmul(a2));
         }
+
 
         grad[0] = grad[0].mulS(1 / m);
         grad[1] = grad[1].mulS(1 / m);
@@ -134,7 +131,7 @@ FeedforwardNeuralNetworks = function() {
 
         for(var i = 0; i < iterations; ++i) {
             result = costFunction(X, y, lambdaArg, numberOfLabels);
-            console.log("cost: " + result.cost);
+            console.log(result.cost);
             Theta[0].add(result.grad[0].mulS(-learningRate / m));
             Theta[1].add(result.grad[1].mulS(-learningRate / m));
         }
