@@ -24,8 +24,8 @@ describe('Feedforward Neural Networks', function () {
         }*/
 
         var xorNeuralNetwork = new FeedforwardNeuralNetworks();
-        xorNeuralNetwork.train(X, labels, 0.01, 0.3, 2, 3000, 2);
-        var result = xorNeuralNetwork.predict(Matrix([[1, 1], [0, 1], [1, 0], [0, 0]]));
+        xorNeuralNetwork.train(X, labels, 0.001, 0.001, 2, 300, 25);
+        var result = xorNeuralNetwork.predict(Matrix([[1, 1], [1, 0], [0, 1], [0, 0]]));
 
         console.log(result);
 
