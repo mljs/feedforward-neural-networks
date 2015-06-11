@@ -37,7 +37,7 @@ FeedforwardNeuralNetworks = function() {
         grad[0] = Matrix.zeros(Theta[0].rows, Theta[0].columns);
         grad[1] = Matrix.zeros(Theta[1].rows, Theta[1].columns);
 
-        X.addColumn(Matrix.ones(m, 1));
+        X.addColumn(0, Matrix.ones(m, 1));
         var transposeX = X.transpose();
 
         var a2 = Theta[0].mmul(transposeX).apply(sigmoid);
@@ -53,9 +53,10 @@ FeedforwardNeuralNetworks = function() {
         var negativeYk = yk.clone().neg();
 
         // TODO: review the cost calculation
-        /*var positiveCost = negativeYk.mulM(a3.apply(logArray));
-        var negativeCost =*/
-        var cost = 0;
+        var positiveCost = negativeYk.transpose().mulM(a3.clone().apply(logArray));
+        var negativeCost = negativeYk.clone().addS(1).transpose()
+            .mulM(a3.clone().neg().add(1).apply(logArray));
+        var cost = (1 / m) * (positiveCost.sum() - negativeCost.sum());
 
         for(i = 0; i < m; ++i) {
             var a1 = Matrix.rowVector(X.getRow(i));
@@ -75,12 +76,12 @@ FeedforwardNeuralNetworks = function() {
             var delta2 = Theta[1].transpose().mmul(delta3).mulM(z2.clone().apply(sigmoidGradient));
             delta2.removeRow(0); // don't forget it
 
-            grad[0].add((delta2.mmul(a1)));
-            grad[1].add((delta3.mmul(a2)));
+            grad[0].addM(delta2.mmul(a1));
+            grad[1].addM(delta3.mmul(a2));
         }
 
-        grad[0].addS(1 / m);
-        grad[1].addS(1 / m);
+        grad[0].mulS(1 / m);
+        grad[1].mulS(1 / m);
 
         X.removeColumn(0); // Removing the bias term from the training set
 
@@ -116,9 +117,9 @@ FeedforwardNeuralNetworks = function() {
                 previousCost = result.cost;
             /*}*/
 
-            //console.log("cost: " + result.cost);
-            Theta[0].add(result.grad[0].mulS(-learningRate));
-            Theta[1].add(result.grad[1].mulS(-learningRate));
+            console.log("cost: " + result.cost);
+            Theta[0] = Theta[0].add(result.grad[0].add(-learningRate));
+            Theta[1] = Theta[1].add(result.grad[1].add(-learningRate));
         }
     };
 

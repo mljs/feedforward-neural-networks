@@ -24,14 +24,14 @@ describe('Feedforward Neural Networks', function () {
         }*/
 
         var xorNeuralNetwork = new FeedforwardNeuralNetworks();
-        xorNeuralNetwork.train(X, labels, 0.001, 0.001, 2, 300, 25);
+        xorNeuralNetwork.train(X, labels, 0.4, 0.001, 2, 23, 25);
         var result = xorNeuralNetwork.predict(Matrix([[1, 1], [1, 0], [0, 1], [0, 0]]));
 
         console.log(result);
 
-        (result[0][0] < result[0][1]).should.be.equal(true);
-        (result[1][0] > result[1][1]).should.be.equal(true);
-        (result[2][0] > result[2][1]).should.be.equal(true);
-        (result[3][0] < result[3][1]).should.be.equal(true);
+        (result[0][0] > result[0][1]).should.be.equal(true);
+        (result[1][0] < result[1][1]).should.be.equal(true);
+        (result[2][0] < result[2][1]).should.be.equal(true);
+        (result[3][0] > result[3][1]).should.be.equal(true);
     });
 });
