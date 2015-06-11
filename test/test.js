@@ -7,7 +7,7 @@ describe('Feedforward Neural Networks', function () {
     it('Training the neural network with XOR', function () {
         var X = Matrix([[0, 0], [0, 1], [1, 0], [1, 1]]);
 
-        var labels = [0, 1, 1, 0];
+        var labels = [0, 0, 0, 1];
         /*for(var i = 1e-5; i < 2; i *= 2) {
             for(var j = 1e-5; j < 2; j *= 2) {
                 var xorNeuralNetwork = new FeedforwardNeuralNetworks();
@@ -24,7 +24,7 @@ describe('Feedforward Neural Networks', function () {
         }*/
 
         var xorNeuralNetwork = new FeedforwardNeuralNetworks();
-        xorNeuralNetwork.train(X, labels, 0.4, 0.001, 2, 23, 25);
+        xorNeuralNetwork.train(X, labels, 0.1, 0.001, 2, 300, 25);
         var result = xorNeuralNetwork.predict(Matrix([[1, 1], [1, 0], [0, 1], [0, 0]]));
 
         console.log(result);

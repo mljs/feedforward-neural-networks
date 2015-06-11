@@ -118,23 +118,18 @@ FeedforwardNeuralNetworks = function() {
             /*}*/
 
             console.log("cost: " + result.cost);
-            Theta[0] = Theta[0].add(result.grad[0].add(-learningRate));
-            Theta[1] = Theta[1].add(result.grad[1].add(-learningRate));
+            Theta[0] = Theta[0].add(result.grad[0].mulS(-learningRate));
+            Theta[1] = Theta[1].add(result.grad[1].mulS(-learningRate));
         }
     };
 
     this.predict = function(X) {
         var m = X.rows;
-        var predictions = Matrix.zeros(m, 1);
 
         var h1 = X.addColumn(0, Matrix.ones(m, 1)).mmul(Theta[0].transpose()).apply(sigmoid);
         var h2 = h1.addColumn(0, Matrix.ones(m, 1)).mmul(Theta[1].transpose()).apply(sigmoid);
 
         return h2;
-    };
-
-    this.numericalGradient = function(costFunction, theta) {
-
     };
 
     return this;

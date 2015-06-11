@@ -29,8 +29,7 @@
   },
   "homepage": "https://github.com/mljs/feedforwardNeuralNetworks",
   "dependencies": {
-    "mathjs": "latest",
-    "ml-matrix": "0.0.3"
+    "ml-matrix": "0.1.0"
   },
   "devDependencies": {
     "browserify": "^8.1.3",
