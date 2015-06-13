@@ -1,136 +1,98 @@
-//TODO: use strict
-var Matrix = require('ml-matrix');
+"use strict";
+var Matrix = require("ml-matrix");
 
-FeedforwardNeuralNetworks = function() {
-    var X;
-    var y;
-    var Theta = new Array(2);
-    var lambda;
+module.exports = FeedforwardNeuralNetworks;
 
-    var Sigmoid = function Sigmoid(value) {
-        return 1.0 / (1 + Math.exp(-value));
-    };
+function randomInitialzeTheta(labelsIn, labelsOut) {
+    var epsilonRange = 1; // values around
+    return Matrix.rand(labelsOut, labelsIn).mulS(2).mulS(epsilonRange).addS(-epsilonRange);
+}
 
-    var SigmoidGradient = function SigmoidGradient(value) {
-        var sig = Sigmoid(value);
-        return sig * (1 - sig);
-    };
+function sigmoid(value) {
+    return 1.0 / (1 + Math.exp(-value));
+}
 
-    var sigmoid = function (i, j) {
-        this[i][j] = Sigmoid(this[i][j]);
-        return this;
-    };
+function sigmoidGradient(value) {
+    var sig = sigmoid(value);
+    return sig * (1 - sig);
+}
 
-    var sigmoidGradient = function(i, j) {
-        this[i][j] = SigmoidGradient(this[i][j]);
-        return this;
-    };
-
-    var logArray = function(i, j) {
-        this[i][j] = Math.log(this[i][j]);
-        return this;
-    };
-
-    var costFunction = function costFunction(X, y, lambdaArg, numberOfLabels) {
-        var m = X.rows;
-        var grad = new Array(2);
-        grad[0] = Matrix.zeros(Theta[0].rows, Theta[0].columns);
-        grad[1] = Matrix.zeros(Theta[1].rows, Theta[1].columns);
-
-        X.addColumn(0, Matrix.ones(m, 1));
-        var transposeX = X.transpose();
-
-        var a2 = Theta[0].mmul(transposeX).apply(sigmoid);
-        a2 = a2.transpose().addColumn(Matrix.ones(m, 1));
-
-        var a3 = Theta[1].mmul(a2.transpose()).apply(sigmoid);
-        a3 = a3.transpose();
-
-        var yk = Matrix.zeros(numberOfLabels, m);
-        for(var i = 0; i < m; ++i) {
-            yk[y[i]][i] = 1;
-        }
-        var negativeYk = yk.clone().neg();
-
-        // TODO: review the cost calculation
-        var positiveCost = negativeYk.transpose().mulM(a3.clone().apply(logArray));
-        var negativeCost = negativeYk.clone().addS(1).transpose()
-            .mulM(a3.clone().neg().add(1).apply(logArray));
-        var cost = (1 / m) * (positiveCost.sum() - negativeCost.sum());
-
-        for(i = 0; i < m; ++i) {
-            var a1 = Matrix.rowVector(X.getRow(i));
-
-            var z2 = Theta[0].mmul(a1.transpose());
-            a2 = z2.clone().apply(sigmoid);
-
-            a2 = a2.transpose().addColumn(0, Matrix.ones(1, 1));
-
-            var z3 = Theta[1].mmul(a2.transpose());
-            a3 = z3.clone().apply(sigmoid);
-
-            var delta3 = a3.clone().add(Matrix.columnVector(negativeYk.getColumn(i)));
-
-            z2.addRow(0, Matrix.ones(1, 1));
-
-            var delta2 = Theta[1].transpose().mmul(delta3).mulM(z2.clone().apply(sigmoidGradient));
-            delta2.removeRow(0); // don't forget it
-
-            grad[0].addM(delta2.mmul(a1));
-            grad[1].addM(delta3.mmul(a2));
-        }
-
-        grad[0].mulS(1 / m);
-        grad[1].mulS(1 / m);
-
-        X.removeColumn(0); // Removing the bias term from the training set
-
-        return {cost: cost, grad: grad};
-    };
-
-    function randomInitialzeTheta(labelsIn, labelsOut) {
-        var epsilonRange = 0.12; // values around
-
-        return Matrix.rand(labelsOut, labelsIn).mulS(2).mulS(epsilonRange).addS(-epsilonRange);
+function FeedforwardNeuralNetworks(X, y, parameters) {
+    if(!(this instanceof FeedforwardNeuralNetworks)) {
+        return new FeedforwardNeuralNetworks();
     }
 
-    this.train = function(XArg, yArg, learningRate, lambdaArg, numberOfLabels, iterations, hiddenLayerSize) {
-        X = XArg;
-        y = yArg;
-        var m = XArg.rows; // test cases
-        var features = XArg.columns;
+    this.X = X;
+    this.y = y;
+    this.numberOfLayers = parameters.length;
+    this.sizes = parameters;
+    this.buildNetwork();
+}
 
-        Theta[0] = randomInitialzeTheta(features + 1, hiddenLayerSize); // TODO: be careful
-        Theta[1] = randomInitialzeTheta(hiddenLayerSize + 1, numberOfLabels);
+FeedforwardNeuralNetworks.prototype.buildNetwork = function buildNetwork() {
+    this.weights = [];
+    this.biases = [];
+    this.inputs = [];
+    this.outputs = [];
+    this.errors = [];
 
-        var result;
-        var previousCost = Infinity;
-        var minError = 1e-5;
+    for(var layers = 0; layers < this.numberOfLayers - 1; ++layers) {
+        var n = this.sizes[layers];
+        var m = this.sizes[layers + 1];
+        this.weights.append(randomInitialzeTheta(n, m));
+        this.biases.append(randomInitialzeTheta(m, 1));
+        this.inputs.append(Matrix.zeros(n, 1));
+        this.outputs.append(Matrix.zeros(n, 1));
+        this.errors.append(Matrix.zeros(n, 1));
+    }
 
-        for(var i = 0; i < iterations; ++i) {
-            var temporalResult = costFunction(X, y, lambdaArg, numberOfLabels);
+    // the last one
+    n = this.sizes[this.sizes.length - 1];
+    this.inputs.append(Matrix.zeros(n, 1));
+    this.outputs.append(Matrix.zeros(n, 1));
+    this.errors.append(Matrix.zeros(n, 1));
+};
 
-            /*if(previousCost - temporalResult.cost < minError || previousCost < temporalResult.cost)
-                break;
-            else {*/
-                result = temporalResult;
-                previousCost = result.cost;
-            /*}*/
+FeedforwardNeuralNetworks.prototype.feedforward = function feedforward(X) {
+    this.inputs[0] = X;
+    this.outputs[0] = X;
+    for(var i = 1; i < this.numberOfLayers; ++i) {
+        this.inputs[i] = this.weights[i - 1].dot(this.outputs[i - 1]) + this.biases[i - 1];
+        this.outputs[i] = sigmoid(this.inputs[i]);
+    }
+    return this.outputs[this.outputs.length - 1];
+};
 
-            console.log("cost: " + result.cost);
-            Theta[0] = Theta[0].add(result.grad[0].mulS(-learningRate));
-            Theta[1] = Theta[1].add(result.grad[1].mulS(-learningRate));
+FeedforwardNeuralNetworks.prototype.updateWeights = function updateWeights(X, y) {
+    var output = this.feedforward(X);
+    var n = this.numberOfLayers - 1;
+    this.errors[n] = sigmoid(this.outputs[n - 1])*(output - y);
+
+    for(var i = n - 1; i > 0; --i) {
+        this.errors[i] = sigmoidGradient(this.inputs[i]) * (this.weights[i].transpose()
+                                                            .dot(this.errors[i + 1]));
+        this.weights[i].sub(this.errors[i + 1].transpose()
+                          .mmul(this.outputs[i]).mulS(this.learningRate));
+        this.biases[i] = this.biases[i].sub( this.errors[i + 1].clone().mulS(this.learningRate) );
+    }
+
+    this.weights[0].sub(this.errors[1].transpose()
+                            .mmul(this.outputs[0]).mulS( this.learningRate));
+    this.biases[0].sub(this.errors[1].clone().mul(this.learningRate));
+};
+
+FeedforwardNeuralNetworks.prototype.train = function train(iterations, learningRate) {
+    this.learningRate = learningRate;
+    var n = this.X.rows;
+    for(var i = 0; i < iterations; ++i) {
+        for(var j = 0; j < n; ++i) {
+            var x = this.X.getRow(j);
+            var y = this.y[j];
+            this.updateWeights(x, y);
         }
-    };
+    }
+};
 
-    this.predict = function(X) {
-        var m = X.rows;
-
-        var h1 = X.addColumn(0, Matrix.ones(m, 1)).mmul(Theta[0].transpose()).apply(sigmoid);
-        var h2 = h1.addColumn(0, Matrix.ones(m, 1)).mmul(Theta[1].transpose()).apply(sigmoid);
-
-        return h2;
-    };
-
-    return this;
+FeedforwardNeuralNetworks.prototype.predict = function predict(x) {
+    return this.feedforward(x);
 };
