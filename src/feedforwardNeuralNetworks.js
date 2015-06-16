@@ -2,10 +2,10 @@
 var Matrix = require("ml-matrix");
 
 module.exports = FeedforwardNeuralNetworks;
+module.exports = Layer;
 
-function randomInitialzeTheta(labelsIn, labelsOut) {
-    var epsilonRange = 1; // values around
-    return Matrix.rand(labelsOut, labelsIn).mulS(2).mulS(epsilonRange).addS(-epsilonRange);
+function randomInitialzeWeights(numberOfWeights) {
+    return Matrix.zeros(1, numberOfWeights).sub(0.5).mul(4).getRow(0);
 }
 
 function sigmoid(value) {
@@ -17,82 +17,81 @@ function sigmoidGradient(value) {
     return sig * (1 - sig);
 }
 
-function FeedforwardNeuralNetworks(X, y, parameters) {
-    if(!(this instanceof FeedforwardNeuralNetworks)) {
-        return new FeedforwardNeuralNetworks();
-    }
+function FeedforwardNeuralNetworks(inputSize, layersSize) {
+    this.layers = new Array(layersSize.length);
 
-    this.X = X;
-    this.y = y;
-    this.numberOfLayers = parameters.length;
-    this.sizes = parameters;
-    this.buildNetwork();
+    for(var i = 0; i < layersSize.length; ++i) {
+        var inSize = i == 0 ? inputSize : layersSize[i - 1];
+        this.layers[i] = new Layer(inSize, layersSize[i]);
+    }
 }
 
-FeedforwardNeuralNetworks.prototype.buildNetwork = function buildNetwork() {
-    this.weights = [];
-    this.biases = [];
-    this.inputs = [];
-    this.outputs = [];
-    this.errors = [];
+FeedforwardNeuralNetworks.prototype.forwardNN = function (input) {
+    var results = input.slice();
 
-    for(var layers = 0; layers < this.numberOfLayers - 1; ++layers) {
-        var n = this.sizes[layers];
-        var m = this.sizes[layers + 1];
-        this.weights.append(randomInitialzeTheta(n, m));
-        this.biases.append(randomInitialzeTheta(m, 1));
-        this.inputs.append(Matrix.zeros(n, 1));
-        this.outputs.append(Matrix.zeros(n, 1));
-        this.errors.append(Matrix.zeros(n, 1));
+    for(var i = 0; i < this.layers.length; ++i) {
+        results = this.layers[i].forward(results);
     }
 
-    // the last one
-    n = this.sizes[this.sizes.length - 1];
-    this.inputs.append(Matrix.zeros(n, 1));
-    this.outputs.append(Matrix.zeros(n, 1));
-    this.errors.append(Matrix.zeros(n, 1));
+    return results;
 };
 
-FeedforwardNeuralNetworks.prototype.feedforward = function feedforward(X) {
-    this.inputs[0] = X;
-    this.outputs[0] = X;
-    for(var i = 1; i < this.numberOfLayers; ++i) {
-        this.inputs[i] = this.weights[i - 1].dot(this.outputs[i - 1]) + this.biases[i - 1];
-        this.outputs[i] = sigmoid(this.inputs[i]);
-    }
-    return this.outputs[this.outputs.length - 1];
-};
+FeedforwardNeuralNetworks.prototype.trainNN = function (dataset, predicted, learningRate, momentum) {
+    var forwardResult = this.forwardNN(dataset);
+    var error = new Array(forwardResult.length);
 
-FeedforwardNeuralNetworks.prototype.updateWeights = function updateWeights(X, y) {
-    var output = this.feedforward(X);
-    var n = this.numberOfLayers - 1;
-    this.errors[n] = sigmoid(this.outputs[n - 1])*(output - y);
-
-    for(var i = n - 1; i > 0; --i) {
-        this.errors[i] = sigmoidGradient(this.inputs[i]) * (this.weights[i].transpose()
-                                                            .dot(this.errors[i + 1]));
-        this.weights[i].sub(this.errors[i + 1].transpose()
-                          .mmul(this.outputs[i]).mulS(this.learningRate));
-        this.biases[i] = this.biases[i].sub( this.errors[i + 1].clone().mulS(this.learningRate) );
+    for (var i = 0; i < error.length; i++) {
+        error[i] = predicted[i] - forwardResult[i];
     }
 
-    this.weights[0].sub(this.errors[1].transpose()
-                            .mmul(this.outputs[0]).mulS( this.learningRate));
-    this.biases[0].sub(this.errors[1].clone().mul(this.learningRate));
+    for (i = this.layers.length - 1; i >= 0; i++) {
+        error = this.layers[i].train(error, learningRate, momentum);
+    }
 };
 
-FeedforwardNeuralNetworks.prototype.train = function train(iterations, learningRate) {
-    this.learningRate = learningRate;
-    var n = this.X.rows;
-    for(var i = 0; i < iterations; ++i) {
-        for(var j = 0; j < n; ++i) {
-            var x = this.X.getRow(j);
-            var y = this.y[j];
-            this.updateWeights(x, y);
+function Layer(inputSize, outputSize) {
+    this.output = new Array(outputSize);
+    this.input = new Array(inputSize + 1); //+1 for bias term
+    this.deltaWeights = new Array((1 + inputSize) * outputSize);
+    this.weights = randomInitialzeWeights(this.deltaWeights.length);
+}
+
+Layer.prototype.forward = function (input) {
+    this.input = input.slice();
+    input[input.length - 1] = 1; // bias
+    var offs = 0; // offset used to get the current weights in the current perceptron
+    this.output.fill(0);
+
+    for(var i = 0; i < this.output.length; ++i) {
+        for(var j = 0 ; j < this.input.length; ++j) {
+            this.output[i] += this.weights[offs + j] * input[j];
         }
+        this.output[i] = sigmoid(this.output[i]);
+        offs = input.length;
     }
+
+    return this.output.slice();
 };
 
-FeedforwardNeuralNetworks.prototype.predict = function predict(x) {
-    return this.feedforward(x);
+Layer.prototype.train = function (error, learningRate, momentum) {
+    var offs = 0;
+    var nextError = new Array(this.input.length);
+
+    for(var i = 0; i < this.output.length; ++i) {
+        var delta = error[i];
+        delta *= sigmoidGradient(this.output[i]);
+
+        for(var j = 0; j < this.input.length; ++i) {
+            var index = offs + j;
+            nextError[i] += this.weights[index] * delta;
+
+            var deltaWeight = this.input[j] + delta * learningRate;
+            this.weights[index] += this.deltaWeights[index] * momentum + deltaWeight;
+            this.deltaWeights = deltaWeight;
+        }
+
+        offs += this.input.length;
+    }
+
+    return nextError;
 };
