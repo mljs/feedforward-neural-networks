@@ -1,0 +1,1 @@
+exports.FeedforwardNeuralNetwork = require('./feedforwardNeuralNetwork');
