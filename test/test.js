@@ -7,10 +7,10 @@ describe('Feedforward Neural Networks', function () {
         var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
         var predictions = [0, 1, 1, 0];
 
-        var xorNN = new FeedforwardNeuralNetwork(2, [2, 1]);
+        var xorNN = new FeedforwardNeuralNetwork(2, [2, 2]);
         xorNN.layers[1].isSigmoid = false;
         xorNN.train(trainingSet, predictions, 500, 0.3, 0.3);
-        console.log(xorNN.forwardNN([0, 0]));
+        console.log(xorNN.forwardNN([1, 0]));
         false.should.be.ok;
     });
 });

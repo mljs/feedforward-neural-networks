@@ -1,6 +1,5 @@
-/**
- * Created by jefferson on 6/16/15.
- */
+"use strict";
+
 var Matrix = require("ml-matrix");
 
 module.exports = Layer;
@@ -14,8 +13,7 @@ function sigmoid(value) {
 }
 
 function sigmoidGradient(value) {
-    var sig = sigmoid(value);
-    return sig * (1 - sig);
+    return value * (1 - value);
 }
 
 function Layer(inputSize, outputSize) {
@@ -51,11 +49,13 @@ Layer.prototype.train = function (error, learningRate, momentum) {
 
     for(var i = 0; i < this.output.length; ++i) {
         var delta = error[i];
-        delta *= this.isSigmoid ?  sigmoidGradient(this.output[i]) : 1;
+
+        if(this.isSigmoid)
+            delta *= sigmoidGradient(this.output[i]);
 
         for(var j = 0; j < this.input.length; ++j) {
             var index = offs + j;
-            nextError[i] += this.weights[index] * delta;
+            nextError[j] += this.weights[index] * delta;
 
             var deltaWeight = this.input[j] * delta * learningRate;
             this.weights[index] += this.deltaWeights[index] * momentum + deltaWeight;
