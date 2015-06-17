@@ -9,12 +9,18 @@ function randomIntegerFromInterval(min, max) {
     return Math.floor(Math.random()*(max - min + 1) + min);
 }
 
-function FeedforwardNeuralNetworks(inputSize, layersSize) {
-    this.layers = new Array(layersSize.length);
+function FeedforwardNeuralNetworks(inputSize, layersSize, reload, model) {
+    if(reload) {
+        this.layers = model.layers;
+    } else {
+        this.layers = new Array(layersSize.length);
 
-    for(var i = 0; i < layersSize.length; ++i) {
-        var inSize = (i == 0) ? inputSize : layersSize[i - 1];
-        this.layers[i] = new Layer(inSize, layersSize[i]);
+        for (var i = 0; i < layersSize.length; ++i) {
+            var inSize = (i == 0) ? inputSize : layersSize[i - 1];
+            this.layers[i] = new Layer(inSize, layersSize[i]);
+        }
+
+        this.layers[this.layers.length - 1].isSigmoid = false;
     }
 }
 
@@ -62,4 +68,11 @@ FeedforwardNeuralNetworks.prototype.predict = function (dataset) {
 
     result = Matrix(result);
     return result.columns === 1 ? result.getColumn(0) : result;
+};
+
+FeedforwardNeuralNetworks.load = function (model) {
+    if(model.modelName !== "FNN")
+        throw new RangeError("The given model is invalid!");
+
+    return new FeedforwardNeuralNetworks(null, null, true, model);
 };
