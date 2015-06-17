@@ -4,18 +4,40 @@ var Matrix = require("ml-matrix");
 
 module.exports = Layer;
 
+/**
+ * Function that create a random array of numbers between -2 to 2.
+ * @param numberOfWeights - size of the array.
+ * @returns {Array} random array of numbers.
+ */
 function randomInitialzeWeights(numberOfWeights) {
     return Matrix.rand(1, numberOfWeights).sub(0.5).mul(4).getRow(0);
 }
 
+/**
+ * Function that calculates the sigmoid (logistic) function.
+ * @param value
+ * @returns {number}
+ */
 function sigmoid(value) {
     return 1.0 / (1 + Math.exp(-value));
 }
 
+/**
+ * Function that calculates the derivate of the sigmoid function.
+ * @param value
+ * @returns {number}
+ */
 function sigmoidGradient(value) {
     return value * (1 - value);
 }
 
+/**
+ * Constructor that creates a layer for the neural network given the number of inputs
+ * and outputs.
+ * @param inputSize
+ * @param outputSize
+ * @constructor
+ */
 function Layer(inputSize, outputSize) {
     this.output = Matrix.zeros(1, outputSize).getRow(0);
     this.input = Matrix.zeros(1, inputSize + 1).getRow(0); //+1 for bias term
@@ -24,6 +46,11 @@ function Layer(inputSize, outputSize) {
     this.isSigmoid = true;
 }
 
+/**
+ * Function that performs the forward propagation for the current layer
+ * @param {Array} input - output from the previous layer.
+ * @returns {Array} output - output for the next layer.
+ */
 Layer.prototype.forward = function (input) {
     this.input = input.slice();
     this.input.push(1); // bias
@@ -43,6 +70,13 @@ Layer.prototype.forward = function (input) {
     return this.output.slice();
 };
 
+/**
+ * Function that performs the backpropagation algorithm for the current layer.
+ * @param {Array} error - errors from the previous layer.
+ * @param {Number} learningRate - Learning rate for the actual layer.
+ * @param {Number} momentum - The regularizarion term.
+ * @returns {Array} the error for the next layer.
+ */
 Layer.prototype.train = function (error, learningRate, momentum) {
     var offs = 0;
     var nextError = Matrix.zeros(1, this.input.length).getRow(0);//new Array(this.input.length);
