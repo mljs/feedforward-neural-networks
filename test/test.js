@@ -6,7 +6,7 @@ describe('Feedforward Neural Networks', function () {
 
     it('Training the neural network with XOR operator', function () {
         var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
-        var predictions = [0, 1, 1, 0];
+        var predictions = [[0], [1], [1], [0]];
 
         var xorNN = new FeedforwardNeuralNetwork([2, 4, 1]);
         xorNN.train(trainingSet, predictions, 500, 0.3, 0.3);

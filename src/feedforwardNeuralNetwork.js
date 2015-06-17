@@ -16,11 +16,11 @@ function randomIntegerFromInterval(min, max) {
 }
 
 /**
- * Constructor for the FNN (Feedforward Neural Networks) that takes the input size and
- * an array of the size of each hidden layer, the last element must be the size of the
- * output of the model.
- * @param {Number} inputSize -
- * @param layersSize
+ * Constructor for the FNN (Feedforward Neural Networks) that takes an Array of Numbers,
+ * those numbers corresponds to the size of each layer in the FNN, the first and the last number of the array corresponds to the input and the
+ * output layer respectively.
+ *
+ * @param {Array} layersSize - Array of sizes of each layer.
  * @param reload - for load purposes.
  * @param model - for load purposes.
  * @constructor
@@ -73,6 +73,12 @@ FeedforwardNeuralNetworks.prototype.iteration = function (dataset, predicted, le
 };
 
 FeedforwardNeuralNetworks.prototype.train = function (trainingSet, predictions, iterations, learningRate, momentum) {
+    if(trainingSet[0].length !== this.inputSize)
+        throw new RangeError("The training set columns must have the same size of the " +
+                             "input layer");
+    if(predictions[0].length !== this.outputSize)
+        throw new RangeError("The prediction set columns must have the same size of the " +
+                             "output layer");
 
     for(var i = 0; i < iterations; ++i) {
         for(var j = 0; j < predictions.length; ++j) {
@@ -83,6 +89,9 @@ FeedforwardNeuralNetworks.prototype.train = function (trainingSet, predictions, 
 };
 
 FeedforwardNeuralNetworks.prototype.predict = function (dataset) {
+    if(dataset[0].length !== this.inputSize)
+        throw new RangeError("The dataset columns must have the same size of the " +
+                             "input layer");
     var result = new Array(dataset.length);
     for (var i = 0; i < dataset.length; i++) {
         result[i] = this.forwardNN(dataset[i]);
