@@ -144,7 +144,7 @@ FeedforwardNeuralNetwork.load = function (model) {
     if(model.modelName !== "FNN")
         throw new RangeError("The given model is invalid!");
 
-    return new FeedforwardNeuralNetwork(null, null, true, model);
+    return new FeedforwardNeuralNetwork(null, true, model);
 };
 
 /**

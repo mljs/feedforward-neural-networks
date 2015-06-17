@@ -31,5 +31,23 @@ describe('Feedforward Neural Networks', function () {
         (results[1][0] > results[1][1]).should.be.ok;
         (results[2][0] > results[2][1]).should.be.ok;
         (results[3][0] < results[3][1]).should.be.ok;
-    })
+    });
+
+    it('Export and import', function () {
+        var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
+        var predictions = [[0], [1], [1], [1]];
+
+        var orNN = new FeedforwardNeuralNetwork([2, 4, 1]);
+        orNN.train(trainingSet, predictions, 500, 0.3, 0.3);
+
+        var model = orNN.export();
+        var neworNN = FeedforwardNeuralNetwork.load(model);
+
+        var results = neworNN.predict(trainingSet);
+
+        (results[0]).should.be.approximately(predictions[0], 3e-1);
+        (results[1]).should.be.approximately(predictions[1], 3e-1);
+        (results[2]).should.be.approximately(predictions[2], 3e-1);
+        (results[3]).should.be.approximately(predictions[3], 3e-1);
+    });
 });
