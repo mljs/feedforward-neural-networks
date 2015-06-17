@@ -69,6 +69,6 @@ __Arguments__
 
 - [Jefferson Hernandez](https://github.com/JeffersonH44)
 
-## Licence
+## License
 
 [MIT](./LICENSE)
