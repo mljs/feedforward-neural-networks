@@ -1,5 +1,7 @@
 "use strict";
+
 var Layer = require("./layer");
+var Matrix = require("ml-matrix");
 
 module.exports = FeedforwardNeuralNetworks;
 
@@ -53,10 +55,11 @@ FeedforwardNeuralNetworks.prototype.train = function (trainingSet, predictions, 
 };
 
 FeedforwardNeuralNetworks.prototype.predict = function (dataset) {
-    var result = new Array(dataset.length)
+    var result = new Array(dataset.length);
     for (var i = 0; i < dataset.length; i++) {
         result[i] = this.forwardNN(dataset[i]);
     }
 
-    return result;
+    result = Matrix(result);
+    return result.columns === 1 ? result.getColumn(0) : result;
 };
