@@ -3,7 +3,7 @@
 var Layer = require("./layer");
 var Matrix = require("ml-matrix");
 
-module.exports = FeedforwardNeuralNetworks;
+module.exports = FeedforwardNeuralNetwork;
 
 /**
  * Function that returns a random number between two numbers (inclusive)
@@ -25,7 +25,7 @@ function randomIntegerFromInterval(min, max) {
  * @param model - for load purposes.
  * @constructor
  */
-function FeedforwardNeuralNetworks(layersSize, reload, model) {
+function FeedforwardNeuralNetwork(layersSize, reload, model) {
     if(reload) {
         this.layers = model.layers;
         this.inputSize = model.inputSize;
@@ -46,7 +46,13 @@ function FeedforwardNeuralNetworks(layersSize, reload, model) {
     }
 }
 
-FeedforwardNeuralNetworks.prototype.forwardNN = function (input) {
+/**
+ * Function that applies a forward propagation over the Neural Network
+ * with one case of the dataset.
+ * @param {Array} input - case of the dataset.
+ * @returns {Array} result of the forward propagation.
+ */
+FeedforwardNeuralNetwork.prototype.forwardNN = function (input) {
     var results = input.slice();
 
     for(var i = 0; i < this.layers.length; ++i) {
@@ -56,15 +62,25 @@ FeedforwardNeuralNetworks.prototype.forwardNN = function (input) {
     return results;
 };
 
-FeedforwardNeuralNetworks.prototype.iteration = function (dataset, predicted, learningRate, momentum) {
-    var forwardResult = this.forwardNN(dataset);
+/**
+ * Function that makes one iteration (epoch) over the Neural Network with one element
+ * of the dataset with corresponding prediction; the other two arguments are the
+ * learning rate and the momentum that is the regularization term for the parameters
+ * of each perceptron in the Neural Network.
+ * @param {Array} data - Element of the dataset.
+ * @param {Array} prediction - Prediction over the data object.
+ * @param {Number} learningRate
+ * @param momentum - the regularization term.
+ */
+FeedforwardNeuralNetwork.prototype.iteration = function (data, prediction, learningRate, momentum) {
+    var forwardResult = this.forwardNN(data);
     var error = new Array(forwardResult.length);
 
-    if(typeof(predicted) === 'number')
-        predicted = [predicted];
+    if(typeof(prediction) === 'number')
+        prediction = [prediction];
 
     for (var i = 0; i < error.length; i++) {
-        error[i] = predicted[i] - forwardResult[i];
+        error[i] = prediction[i] - forwardResult[i];
     }
 
     for (i = this.layers.length - 1; i >= 0; i--) {
@@ -72,7 +88,20 @@ FeedforwardNeuralNetworks.prototype.iteration = function (dataset, predicted, le
     }
 };
 
-FeedforwardNeuralNetworks.prototype.train = function (trainingSet, predictions, iterations, learningRate, momentum) {
+/**
+ * Method that train the neural network with a given training set with corresponding
+ * predictions, the number of iterations that we want to perform, the learning rate
+ * and the momentum that is the regularization term for the parameters of each
+ * perceptron in the Neural Network.
+ * @param {Matrix} trainingSet
+ * @param {Matrix} predictions
+ * @param {Number} iterations
+ * @param {Number} learningRate
+ * @param {Number} momentum
+ */
+FeedforwardNeuralNetwork.prototype.train = function (trainingSet, predictions, iterations, learningRate, momentum) {
+    if(trainingSet.length !== predictions.length)
+        throw new RangeError("the training and prediction set must have the same size.");
     if(trainingSet[0].length !== this.inputSize)
         throw new RangeError("The training set columns must have the same size of the " +
                              "input layer");
@@ -88,7 +117,12 @@ FeedforwardNeuralNetworks.prototype.train = function (trainingSet, predictions, 
     }
 };
 
-FeedforwardNeuralNetworks.prototype.predict = function (dataset) {
+/**
+ * Function that with a dataset, gives all the predictions for this dataset.
+ * @param {Matrix} dataset.
+ * @returns {Array} predictions
+ */
+FeedforwardNeuralNetwork.prototype.predict = function (dataset) {
     if(dataset[0].length !== this.inputSize)
         throw new RangeError("The dataset columns must have the same size of the " +
                              "input layer");
@@ -101,14 +135,23 @@ FeedforwardNeuralNetworks.prototype.predict = function (dataset) {
     return result.columns === 1 ? result.getColumn(0) : result;
 };
 
-FeedforwardNeuralNetworks.load = function (model) {
+/**
+ * function that loads a object model into the Neural Network.
+ * @param model
+ * @returns {FeedforwardNeuralNetwork} with the provided model.
+ */
+FeedforwardNeuralNetwork.load = function (model) {
     if(model.modelName !== "FNN")
         throw new RangeError("The given model is invalid!");
 
-    return new FeedforwardNeuralNetworks(null, null, true, model);
+    return new FeedforwardNeuralNetwork(null, null, true, model);
 };
 
-FeedforwardNeuralNetworks.prototype.export = function () {
+/**
+ * Function that exports the actual Neural Network to an object.
+ * @returns {{modelName: string, layers: *, inputSize: *, outputSize: *}}
+ */
+FeedforwardNeuralNetwork.prototype.export = function () {
     return {
         modelName: "FNN",
         layers: this.layers,
