@@ -76,3 +76,10 @@ FeedforwardNeuralNetworks.load = function (model) {
 
     return new FeedforwardNeuralNetworks(null, null, true, model);
 };
+
+FeedforwardNeuralNetworks.prototype.export = function () {
+    return {
+        modelName: "FNN",
+        layers: this.layers
+    };
+};
