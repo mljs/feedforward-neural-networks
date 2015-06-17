@@ -45,10 +45,18 @@ FeedforwardNeuralNetworks.prototype.iteration = function (dataset, predicted, le
 FeedforwardNeuralNetworks.prototype.train = function (trainingSet, predictions, iterations, learningRate, momentum) {
 
     for(var i = 0; i < iterations; ++i) {
-        //console.log("");
         for(var j = 0; j < predictions.length; ++j) {
             var index = randomIntegerFromInterval(0, predictions.length - 1);
             this.iteration(trainingSet[index], predictions[index], learningRate, momentum);
         }
     }
+};
+
+FeedforwardNeuralNetworks.prototype.predict = function (dataset) {
+    var result = new Array(dataset.length)
+    for (var i = 0; i < dataset.length; i++) {
+        result[i] = this.forwardNN(dataset[i]);
+    }
+
+    return result;
 };
