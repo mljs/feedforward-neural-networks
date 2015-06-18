@@ -1,6 +1,6 @@
 "use strict";
 
-var FeedforwardNeuralNetwork =require("../src/feedforwardNeuralNetwork");
+var FeedforwardNeuralNetwork = require("..");
 
 describe('Feedforward Neural Networks', function () {
 

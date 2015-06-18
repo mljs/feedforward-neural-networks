@@ -1,1 +1,1 @@
-exports.FeedforwardNeuralNetwork = require('./feedforwardNeuralNetwork');
+module.exports = require('./feedforwardNeuralNetwork');
