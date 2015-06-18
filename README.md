@@ -1,6 +1,9 @@
 # Feedforward Neural Network
 
-A implementation of feedforward neural networks in javascript.
+A implementation of feedforward neural networks in javascript based on the mrbo answer
+found here:
+
+[Implementation] (http://stackoverflow.com/questions/9951487/implementing-a-neural-network-in-java-training-and-backpropagation-issues)
 
 ## Methods
 
