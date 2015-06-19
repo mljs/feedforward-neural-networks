@@ -1,5 +1,5 @@
 {
-  "name": "feedforwardNeuralNetworks",
+  "name": "ml-fnn",
   "version": "1.0.0",
   "description": "feedforward neural networks library",
   "main": "src/index.js",
