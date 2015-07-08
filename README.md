@@ -16,7 +16,7 @@ __Example__
 var FNN = new FeedforwardNeuralNetwork([2, 4, 1]);
 ```
 
-### train(trainingSet, predictions, learningRate, momentum)
+### train(trainingSet, predictions, iterations, learningRate, momentum)
 
 Train the Neural Network with a given training set, predictions, learning rate and a 
 momentum (Regularization term).
@@ -25,6 +25,7 @@ __Arguments__
 
 * `trainingSet` - A matrix of the training set.
 * `predictions` - A matrix of predictions with the same size of rows of the trainingSet.
+* `iterations` - Maximum number of iterations of the algorithm.
 * `learningRate` - The learning rate (number).
 * `momentum` - The regularization term (number).
 
