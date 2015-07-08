@@ -1,7 +1,7 @@
 {
-  "name": "feedforward neural networks",
+  "name": "ml-fnn",
   "version": "1.0.0",
-  "description": "feedforward neural networks librar",
+  "description": "feedforward neural networks library",
   "keywords": [
     "neural",
     "networks",
