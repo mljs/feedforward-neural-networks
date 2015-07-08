@@ -83,15 +83,11 @@ FeedforwardNeuralNetwork.prototype.iteration = function (data, prediction, learn
         error[i] = prediction[i] - forwardResult[i];
     }
 
-    var layersNum = this.layers.length;
+    var lengthLayers = this.layers.length;
 
-    for(i = 0; i < layersNum; ++i) {
-        error = this.layers[layersNum - i - 1].train(error, learningRate, momentum)
+    for(i = 0; i < lengthLayers; ++i) {
+        error = this.layers[lengthLayers - 1 - i].train(error, learningRate, momentum);
     }
-};
-
-FeedforwardNeuralNetwork.prototype.flagFunction = function () {
-    return 0;
 };
 
 /**
