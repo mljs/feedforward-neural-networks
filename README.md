@@ -84,9 +84,9 @@ __Arguments__
 
 [npm-image]: https://img.shields.io/npm/v/ml-fnn.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/ml-fnn
-[travis-image]: https://img.shields.io/travis/mljs/fnn/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/mljs/fnn
-[david-image]: https://img.shields.io/david/mljs/fnn.svg?style=flat-square
-[david-url]: https://david-dm.org/mljs/fnn
+[travis-image]: https://img.shields.io/travis/mljs/feedforward-neural-networks/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/mljs/feedforward-neural-networks
+[david-image]: https://img.shields.io/david/mljs/feedforward-neural-networks.svg?style=flat-square
+[david-url]: https://david-dm.org/mljs/feedforward-neural-networks
 [download-image]: https://img.shields.io/npm/dm/ml-fnn.svg?style=flat-square
 [download-url]: https://npmjs.org/package/ml-fnn
