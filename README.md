@@ -21,7 +21,7 @@ __Arguments__
 __Example__
 
 ```js
-var FNN = new FeedforwardNeuralNetwork([2, 4, 1]);
+var fnn = new FeedforwardNeuralNetwork();
 ```
 
 ### train(trainingSet, predictions, iterations, learningRate, momentum)
@@ -33,6 +33,11 @@ __Arguments__
 
 * `trainingSet` - A matrix of the training set.
 * `predictions` - A matrix of predictions with the same size of rows of the trainingSet.
+* `options` - A Javascript object with the configuration of the FNN.
+
+__Options__
+
+* `hiddenLayers` - Array with the size of each hidden layer in the FNN.
 * `iterations` - Maximum number of iterations of the algorithm.
 * `learningRate` - The learning rate (number).
 * `momentum` - The regularization term (number).
@@ -42,8 +47,14 @@ __Example__
 ```js
 var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
 var predictions = [[0], [0], [0], [1]];
+var options = {
+  hiddenLayers: [4],
+  iterations: 100,
+  learningRate: 0.3,
+  momentum: 0.3
+};
 
-FNN.train(trainingSet, predictions, 0.3, 0.3);
+fnn.train(trainingSet, predictions, options);
 ```
 
 ### predict(dataset)
@@ -59,7 +70,7 @@ __Example__
 ```js
 var dataset = [[0, 0], [0, 1], [1, 0], [1, 1]];
 
-var ans = FNN.predict(dataset);
+var ans = fnn.predict(dataset);
 ```
 
 ### export()

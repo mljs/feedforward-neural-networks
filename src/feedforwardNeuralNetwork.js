@@ -20,31 +20,35 @@ function randomIntegerFromInterval(min, max) {
  * those numbers corresponds to the size of each layer in the FNN, the first and the last number of the array corresponds to the input and the
  * output layer respectively.
  *
- * @param {Array} layersSize - Array of sizes of each layer.
  * @param reload - for load purposes.
  * @param model - for load purposes.
  * @constructor
  */
-function FeedforwardNeuralNetwork(layersSize, reload, model) {
+function FeedforwardNeuralNetwork(reload, model) {
     if(reload) {
         this.layers = model.layers;
         this.inputSize = model.inputSize;
         this.outputSize = model.outputSize;
-    } else {
-        this.inputSize = layersSize[0];
-        this.outputSize = layersSize[layersSize.length - 1];
-        layersSize.shift();
-
-        this.layers = new Array(layersSize.length);
-
-        for (var i = 0; i < layersSize.length; ++i) {
-            var inSize = (i == 0) ? this.inputSize : layersSize[i - 1];
-            this.layers[i] = new Layer(inSize, layersSize[i]);
-        }
-
-        this.layers[this.layers.length - 1].isSigmoid = false;
     }
 }
+
+/**
+ * Build the Neural Network with an array that represent each hidden layer size.
+ *
+ * @param {Array} layersSize - Array of sizes of each layer.
+ */
+FeedforwardNeuralNetwork.prototype.buildNetwork = function (layersSize) {
+    layersSize.push(this.outputSize);
+
+    this.layers = new Array(layersSize.length);
+
+    for (var i = 0; i < layersSize.length; ++i) {
+        var inSize = (i == 0) ? this.inputSize : layersSize[i - 1];
+        this.layers[i] = new Layer(inSize, layersSize[i]);
+    }
+
+    this.layers[this.layers.length - 1].isSigmoid = false;
+};
 
 /**
  * Function that applies a forward propagation over the Neural Network
@@ -92,24 +96,35 @@ FeedforwardNeuralNetwork.prototype.iteration = function (data, prediction, learn
 
 /**
  * Method that train the neural network with a given training set with corresponding
- * predictions, the number of iterations that we want to perform, the learning rate
- * and the momentum that is the regularization term for the parameters of each
- * perceptron in the Neural Network.
+ * predictions. The options argument has an array of the number of perceptrons that we want in each hidden layer, the
+ * number of iterations (default 50) that we want to perform, the learning rate and the momentum that is the
+ * regularization term (default 0.1 for both) for the parameters of each perceptron in the Neural Network.
+ *
+ * options:
+ * * hiddenLayers - Array of number with each hidden layer size.
+ * * iterations - Number
+ * * learningRate - Number
+ * * momentum - Number
+ *
  * @param {Matrix} trainingSet
  * @param {Matrix} predictions
- * @param {Number} iterations
- * @param {Number} learningRate
- * @param {Number} momentum
+ * @param {Number} options
  */
-FeedforwardNeuralNetwork.prototype.train = function (trainingSet, predictions, iterations, learningRate, momentum) {
+FeedforwardNeuralNetwork.prototype.train = function (trainingSet, predictions, options) {
+    if(options === undefined) options = {};
+
     if(trainingSet.length !== predictions.length)
         throw new RangeError("the training and prediction set must have the same size.");
-    if(trainingSet[0].length !== this.inputSize)
-        throw new RangeError("The training set columns must have the same size of the " +
-                             "input layer");
-    if(predictions[0].length !== this.outputSize)
-        throw new RangeError("The prediction set columns must have the same size of the " +
-                             "output layer");
+
+    this.inputSize = trainingSet[0].length;
+    this.outputSize = predictions[0].length;
+
+    var hiddenLayers = options.hiddenLayers === undefined ? [10] : options.hiddenLayers;
+    var iterations = options.iterations === undefined ? 50 : options.iterations;
+    var learningRate = options.learningRate === undefined ? 0.1 : options.learningRate;
+    var momentum = options.momentum === undefined ? 0.1 : options.momentum;
+
+    this.buildNetwork(options.hiddenLayers);
 
     for(var i = 0; i < iterations; ++i) {
         for(var j = 0; j < predictions.length; ++j) {
@@ -146,7 +161,7 @@ FeedforwardNeuralNetwork.load = function (model) {
     if(model.modelName !== "FNN")
         throw new RangeError("The given model is invalid!");
 
-    return new FeedforwardNeuralNetwork(null, true, model);
+    return new FeedforwardNeuralNetwork(true, model);
 };
 
 /**

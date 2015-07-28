@@ -5,12 +5,22 @@ var Matrix = require("ml-matrix");
 module.exports = Layer;
 
 /**
- * Function that create a random array of numbers between -2 to 2.
+ * Function that create a random array of numbers between value depending
+ * on the input and output size given the following formula:
+ *
+ *    sqrt(6) / sqrt(l_in + l_out);
+ *
+ * Taken from the coursera course of machine learning from Andrew Ng,
+ * Exercise 4, Page 7 of the exercise PDF.
+ *
  * @param numberOfWeights - size of the array.
+ * @param inputSize - number of input of the current layer
+ * @param outputSize - number of output of the current layer
  * @returns {Array} random array of numbers.
  */
-function randomInitialzeWeights(numberOfWeights) {
-    return Matrix.rand(1, numberOfWeights).sub(0.5).mul(4).getRow(0);
+function randomInitialzeWeights(numberOfWeights, inputSize, outputSize) {
+    var epsilon = 2.449489742783 / Math.sqrt(inputSize + outputSize);
+    return Matrix.rand(1, numberOfWeights).mul(2 * epsilon).sub(epsilon).getRow(0);
 }
 
 /**
@@ -42,7 +52,7 @@ function Layer(inputSize, outputSize) {
     this.output = Matrix.zeros(1, outputSize).getRow(0);
     this.input = Matrix.zeros(1, inputSize + 1).getRow(0); //+1 for bias term
     this.deltaWeights = Matrix.zeros(1, (1 + inputSize) * outputSize).getRow(0);
-    this.weights = randomInitialzeWeights(this.deltaWeights.length);
+    this.weights = randomInitialzeWeights(this.deltaWeights.length, inputSize, outputSize);
     this.isSigmoid = true;
 }
 
