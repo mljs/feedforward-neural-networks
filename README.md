@@ -12,11 +12,7 @@ found here:
 
 ## Methods
 
-### new FeedforwardNeuralNetwork([LayersSize])
-
-__Arguments__
-
-* `layersSize` - Array of numbers with sizes of each layer.
+### new FeedforwardNeuralNetwork()
 
 __Example__
 
@@ -24,7 +20,7 @@ __Example__
 var fnn = new FeedforwardNeuralNetwork();
 ```
 
-### train(trainingSet, predictions, iterations, learningRate, momentum)
+### train(trainingSet, predictions, options)
 
 Train the Neural Network with a given training set, predictions, learning rate and a 
 momentum (Regularization term).
