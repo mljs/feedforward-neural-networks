@@ -92,6 +92,13 @@ FeedforwardNeuralNetwork.prototype.iteration = function (data, prediction, learn
     for(i = 0; i < lengthLayers; ++i) {
         error = this.layers[lengthLayers - 1 - i].train(error, learningRate, momentum);
     }
+
+    var sumError = 0;
+    for(i = 0; i < error.length; ++i) {
+        sumError += error[i];
+    }
+
+    return sumError;
 };
 
 /**
@@ -124,14 +131,18 @@ FeedforwardNeuralNetwork.prototype.train = function (trainingSet, predictions, o
     var learningRate = options.learningRate === undefined ? 0.1 : options.learningRate;
     var momentum = options.momentum === undefined ? 0.1 : options.momentum;
 
-    this.buildNetwork(options.hiddenLayers);
+    this.buildNetwork(hiddenLayers);
 
     for(var i = 0; i < iterations; ++i) {
         for(var j = 0; j < predictions.length; ++j) {
-            var index = randomIntegerFromInterval(0, predictions.length - 1);
-            this.iteration(trainingSet[index], predictions[index], learningRate, momentum);
+            var currentError = this.iteration(trainingSet[j], predictions[j], learningRate, momentum);
+        }
+        console.log(currentError);
+        if(currentError > 0 && currentError <= 1e-2) {
+            break;
         }
     }
+    console.log(i);
 };
 
 /**
