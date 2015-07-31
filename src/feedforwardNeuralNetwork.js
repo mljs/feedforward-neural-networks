@@ -137,12 +137,12 @@ FeedforwardNeuralNetwork.prototype.train = function (trainingSet, predictions, o
         for(var j = 0; j < predictions.length; ++j) {
             var currentError = this.iteration(trainingSet[j], predictions[j], learningRate, momentum);
         }
-        console.log(currentError);
-        if(currentError > 0 && currentError <= 1e-2) {
+        //console.log(currentError);
+        if(i > 10 && currentError > 0 && currentError <= 1e-6) {
             break;
         }
     }
-    console.log(i);
+    //console.log(i + "\n");
 };
 
 /**

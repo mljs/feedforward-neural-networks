@@ -32,6 +32,7 @@
     "ml-matrix": "0.1.0"
   },
   "devDependencies": {
+    "babyparse": "^0.4.3",
     "mocha": "latest",
     "mocha-better-spec-reporter": "latest",
     "should": "latest"
