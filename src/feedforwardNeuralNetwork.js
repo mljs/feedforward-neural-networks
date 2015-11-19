@@ -148,7 +148,7 @@ FeedforwardNeuralNetwork.prototype.predict = function (dataset) {
         result[i] = this.forwardNN(dataset[i]);
     }
 
-    result = Matrix(result);
+    result = new Matrix(result);
     return result.columns === 1 ? result.getColumn(0) : result;
 };
 
