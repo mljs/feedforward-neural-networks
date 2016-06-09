@@ -141,9 +141,9 @@ class FeedforwardNeuralNetwork {
         return result.columns === 1 ? result.getColumn(0) : result;
     }
 
-    export() {
+    toJSON() {
         return {
-            modelName: "FNN",
+            name: 'FNN',
             layers: this.layers,
             inputSize: this.inputSize,
             outputSize: this.outputSize
@@ -151,12 +151,13 @@ class FeedforwardNeuralNetwork {
     }
 
     static load(model) {
-        if(model.modelName !== "FNN")
-            throw new RangeError("The given model is invalid!");
-
+        if(model.name !== 'FNN')
+            throw new RangeError('Invalid model: ' + model.name);
         return new FeedforwardNeuralNetwork(true, model);
     }
 }
+
+module.exports = FeedforwardNeuralNetwork;
 
 /**
  * Function that returns a random number between two numbers (inclusive)
@@ -167,5 +168,3 @@ class FeedforwardNeuralNetwork {
 function randomIntegerFromInterval(min, max) {
     return Math.floor(Math.random()*(max - min + 1) + min);
 }
-
-module.exports = FeedforwardNeuralNetwork;

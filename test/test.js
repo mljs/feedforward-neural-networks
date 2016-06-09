@@ -59,7 +59,7 @@ describe('Feedforward Neural Networks', function () {
         };
         orNN.train(trainingSet, predictions, options);
 
-        var model = orNN.export();
+        var model = orNN.toJSON();
         var neworNN = FeedforwardNeuralNetwork.load(model);
 
         var results = neworNN.predict(trainingSet);
