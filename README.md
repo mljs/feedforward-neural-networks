@@ -12,24 +12,9 @@ found here:
 
 ## Methods
 
-### new FeedforwardNeuralNetwork()
+### new FNN(X, Y)
 
-__Example__
-
-```js
-var fnn = new FeedforwardNeuralNetwork();
-```
-
-### train(trainingSet, predictions, options)
-
-Train the Neural Network with a given training set, predictions, learning rate and a 
-momentum (Regularization term).
-
-__Arguments__
-
-* `trainingSet` - A matrix of the training set.
-* `predictions` - A matrix of predictions with the same size of rows of the trainingSet.
-* `options` - A Javascript object with the configuration of the FNN.
+### train(options)
 
 __Options__
 
@@ -38,52 +23,11 @@ __Options__
 * `learningRate` - The learning rate (number).
 * `momentum` - The regularization term (number).
 
-__Example__
-
-```js
-var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
-var predictions = [[0], [0], [0], [1]];
-var options = {
-  hiddenLayers: [4],
-  iterations: 100,
-  learningRate: 0.3,
-  momentum: 0.3
-};
-
-fnn.train(trainingSet, predictions, options);
-```
-
 ### predict(dataset)
 
-Predict the values of the dataset.
+### toJSON()
 
-__Arguments__
-
-* `dataset` - A matrix that contains the dataset.
-
-__Example__
-
-```js
-var dataset = [[0, 0], [0, 1], [1, 0], [1, 1]];
-
-var ans = fnn.predict(dataset);
-```
-
-### export()
-
-Exports the actual Neural Network to an Javascript Object.
-
-### load(model)
-
-Returns a new Neural Network with the given model.
-
-__Arguments__
-
-* `model` - Javascript Object generated from export() function.
-
-## Authors
-
-- [Jefferson Hernandez](https://github.com/JeffersonH44)
+### FNN.load(model)
 
 ## License
 
