@@ -8,8 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --require should --reporter mocha-better-spec-reporter --recursive",
-    "build": "gulp build"
+    "test": "mocha --require should --reporter mocha-better-spec-reporter --recursive"
   },
   "repository": {
     "type": "git",
@@ -29,11 +28,11 @@
   },
   "homepage": "https://github.com/mljs/feedforward-neural-networks",
   "dependencies": {
-    "ml-matrix": "^1.0.3"
+    "ml-matrix": "^1.1.5"
   },
   "devDependencies": {
-    "mocha": "latest",
-    "mocha-better-spec-reporter": "latest",
-    "should": "latest"
+    "mocha": "^2.5.3",
+    "mocha-better-spec-reporter": "^3.0.2",
+    "should": "^9.0.1"
   }
 }
