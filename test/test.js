@@ -8,7 +8,7 @@ describe('Feedforward Neural Networks', function () {
         var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
         var predictions = [[0], [1], [1], [0]];
 
-        var xorNN = new FeedforwardNeuralNetwork();
+        var xorNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [4],
             iterations: 500,
@@ -16,7 +16,7 @@ describe('Feedforward Neural Networks', function () {
             momentum: 0.3
         };
 
-        xorNN.train(trainingSet, predictions, options);
+        xorNN.train(options);
         var results = xorNN.predict(trainingSet);
 
         (results[0]).should.be.approximately(predictions[0], 3e-1);
@@ -29,14 +29,14 @@ describe('Feedforward Neural Networks', function () {
         var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
         var predictions = [[1, 0], [1, 0], [1, 0], [0, 1]];
 
-        var andNN = new FeedforwardNeuralNetwork();
+        var andNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [3],
             iterations: 500,
             learningRate : 0.3,
             momentum: 0.3
         };
-        andNN.train(trainingSet, predictions, options);
+        andNN.train(options);
 
         var results = andNN.predict(trainingSet);
 
@@ -50,14 +50,14 @@ describe('Feedforward Neural Networks', function () {
         var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
         var predictions = [[0], [1], [1], [1]];
 
-        var orNN = new FeedforwardNeuralNetwork();
+        var orNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [4],
             iterations: 500,
             learningRate : 0.3,
             momentum: 0.3
         };
-        orNN.train(trainingSet, predictions, options);
+        orNN.train(options);
 
         var model = orNN.toJSON();
         var neworNN = FeedforwardNeuralNetwork.load(model);
@@ -74,14 +74,14 @@ describe('Feedforward Neural Networks', function () {
         var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
         var predictions = [[2], [0], [1], [0]];
 
-        var nn = new FeedforwardNeuralNetwork();
+        var nn = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [4],
             iterations: 300,
             learningRate : 0.5,
             momentum: 0.1
         };
-        nn.train(trainingSet, predictions, options);
+        nn.train(options);
 
         var result = nn.predict(trainingSet);
 
@@ -97,14 +97,14 @@ describe('Feedforward Neural Networks', function () {
         var predictions = [[1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0],
                             [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]];
 
-        var nn = new FeedforwardNeuralNetwork();
+        var nn = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [10],
             iterations: 200,
             learningRate : 0.1,
             momentum: 0.1
         };
-        nn.train(trainingSet, predictions, options);
+        nn.train(options);
 
         var result = nn.predict([[5, 4]]);
 

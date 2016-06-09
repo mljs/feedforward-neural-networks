@@ -9,15 +9,21 @@ class FeedforwardNeuralNetwork {
      * those numbers corresponds to the size of each layer in the FNN, the first and the last number of the array corresponds to the input and the
      * output layer respectively.
      *
-     * @param reload - for load purposes.
-     * @param model - for load purposes.
      * @constructor
      */
-    constructor(reload, model) {
-        if(reload) {
+    constructor(X, Y) {
+        if (X === true) {
+            const model = Y;
             this.layers = model.layers;
             this.inputSize = model.inputSize;
             this.outputSize = model.outputSize;
+        } else {
+            if (X.length !== Y.length)
+                throw new RangeError("X and Y must have the same size.");
+            this.X = X;
+            this.Y = Y;
+            this.inputSize = X[0].length;
+            this.outputSize = Y[0].length;
         }
     }
 
@@ -48,7 +54,7 @@ class FeedforwardNeuralNetwork {
     forwardNN(input) {
         var results = input.slice();
 
-        for(var i = 0; i < this.layers.length; ++i) {
+        for (var i = 0; i < this.layers.length; ++i) {
             results = this.layers[i].forward(results);
         }
 
@@ -69,7 +75,7 @@ class FeedforwardNeuralNetwork {
         var forwardResult = this.forwardNN(data);
         var error = new Array(forwardResult.length);
 
-        if(typeof(prediction) === 'number')
+        if (typeof(prediction) === 'number')
             prediction = [prediction];
 
         for (var i = 0; i < error.length; i++) {
@@ -78,7 +84,7 @@ class FeedforwardNeuralNetwork {
 
         var lengthLayers = this.layers.length;
 
-        for(i = 0; i < lengthLayers; ++i) {
+        for (i = 0; i < lengthLayers; ++i) {
             error = this.layers[lengthLayers - 1 - i].train(error, learningRate, momentum);
         }
     }
@@ -95,28 +101,23 @@ class FeedforwardNeuralNetwork {
      * * learningRate - Number
      * * momentum - Number
      *
-     * @param {Matrix} trainingSet
-     * @param {Matrix} predictions
-     * @param {Number} options
+     * @param {object} options
      */
-    train(trainingSet, predictions, options) {
-        if(options === undefined) options = {};
+    train(options) {
+        if (options === undefined) options = {};
 
-        if(trainingSet.length !== predictions.length)
-            throw new RangeError("the training and prediction set must have the same size.");
-
-        this.inputSize = trainingSet[0].length;
-        this.outputSize = predictions[0].length;
+        const trainingSet = this.X;
+        const predictions = this.Y;
 
         var hiddenLayers = options.hiddenLayers === undefined ? [10] : options.hiddenLayers;
         var iterations = options.iterations === undefined ? 50 : options.iterations;
         var learningRate = options.learningRate === undefined ? 0.1 : options.learningRate;
         var momentum = options.momentum === undefined ? 0.1 : options.momentum;
 
-        this.buildNetwork(options.hiddenLayers);
+        this.buildNetwork(hiddenLayers);
 
-        for(var i = 0; i < iterations; ++i) {
-            for(var j = 0; j < predictions.length; ++j) {
+        for (var i = 0; i < iterations; ++i) {
+            for (var j = 0; j < predictions.length; ++j) {
                 var index = randomIntegerFromInterval(0, predictions.length - 1);
                 this.iteration(trainingSet[index], predictions[index], learningRate, momentum);
             }
@@ -129,7 +130,7 @@ class FeedforwardNeuralNetwork {
      * @returns {Array} predictions
      */
     predict(dataset) {
-        if(dataset[0].length !== this.inputSize)
+        if (dataset[0].length !== this.inputSize)
             throw new RangeError("The dataset columns must have the same size of the " +
                 "input layer");
         var result = new Array(dataset.length);
@@ -151,7 +152,7 @@ class FeedforwardNeuralNetwork {
     }
 
     static load(model) {
-        if(model.name !== 'FNN')
+        if (model.name !== 'FNN')
             throw new RangeError('Invalid model: ' + model.name);
         return new FeedforwardNeuralNetwork(true, model);
     }
@@ -166,5 +167,5 @@ module.exports = FeedforwardNeuralNetwork;
  * @returns {number} random number
  */
 function randomIntegerFromInterval(min, max) {
-    return Math.floor(Math.random()*(max - min + 1) + min);
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
