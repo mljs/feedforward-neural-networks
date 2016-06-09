@@ -18,7 +18,7 @@ module.exports = Layer;
  * @param outputSize - number of output of the current layer
  * @returns {Array} random array of numbers.
  */
-function randomInitialzeWeights(numberOfWeights, inputSize, outputSize) {
+function randomInitializeWeights(numberOfWeights, inputSize, outputSize) {
     var epsilon = 2.449489742783 / Math.sqrt(inputSize + outputSize);
     return Matrix.rand(1, numberOfWeights).mul(2 * epsilon).sub(epsilon).getRow(0);
 }
@@ -52,7 +52,7 @@ function Layer(inputSize, outputSize) {
     this.output = Matrix.zeros(1, outputSize).getRow(0);
     this.input = Matrix.zeros(1, inputSize + 1).getRow(0); //+1 for bias term
     this.deltaWeights = Matrix.zeros(1, (1 + inputSize) * outputSize).getRow(0);
-    this.weights = randomInitialzeWeights(this.deltaWeights.length, inputSize, outputSize);
+    this.weights = randomInitializeWeights(this.deltaWeights.length, inputSize, outputSize);
     this.isSigmoid = true;
 }
 
