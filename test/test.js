@@ -18,7 +18,7 @@ describe('Feedforward Neural Networks', function () {
 
         xorNN.train(options);
         var results = xorNN.predict(trainingSet);
-
+        
         (results[0]).should.be.approximately(predictions[0], 3e-1);
         (results[1]).should.be.approximately(predictions[1], 3e-1);
         (results[2]).should.be.approximately(predictions[2], 3e-1);
