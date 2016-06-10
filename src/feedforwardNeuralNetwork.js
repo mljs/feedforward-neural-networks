@@ -139,7 +139,9 @@ class FeedforwardNeuralNetwork {
         }
 
         result = new Matrix(result);
-        return result.columns === 1 ? result.getColumn(0) : result;
+        //return result.columns === 1 ? result.getColumn(0) : result;
+        return result;
+        
     }
 
     toJSON() {
