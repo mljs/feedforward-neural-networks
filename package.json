@@ -1,6 +1,6 @@
 {
   "name": "ml-fnn",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "feedforward neural networks library",
   "main": "src/index.js",
   "directories": {
