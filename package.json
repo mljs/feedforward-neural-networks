@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/mljs/feedforward-neural-networks",
   "dependencies": {
-    "ml-matrix": "^1.1.5"
+    "ml-matrix": "^2.0.0"
   },
   "devDependencies": {
     "mocha": "^3.0.2",
