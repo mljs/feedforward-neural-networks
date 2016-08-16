@@ -31,8 +31,8 @@
     "ml-matrix": "^1.1.5"
   },
   "devDependencies": {
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.2",
     "mocha-better-spec-reporter": "^3.0.2",
-    "should": "^9.0.1"
+    "should": "^11.1.0"
   }
 }
