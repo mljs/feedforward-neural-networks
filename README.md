@@ -19,6 +19,7 @@ found here:
 __Options__
 
 * `hiddenLayers` - Array with the size of each hidden layer in the FNN.
+* `hiddenOptions` - (optional) Array with the options for each layer of the FNN specifiying activating functions of the form `{nonLinearity:'sigmoid' or 'tanh'}`.
 * `iterations` - Maximum number of iterations of the algorithm.
 * `learningRate` - The learning rate (number).
 * `momentum` - The regularization term (number).

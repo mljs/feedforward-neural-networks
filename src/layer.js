@@ -21,7 +21,10 @@ class Layer {
         
         this.isSigmoid = options.nonLinearity === 'sigmoid';
         this.isTanh = options.nonLinearity === 'tanh';
-        
+
+        if(!this.isSigmoid && !this.isTanh){
+            throw Error('Must define non-linearity as sigmoid or tanh.')
+        }
         // logical XOR, cannot be both at the same time.
         if(!((this.isSigmoid || this.isTanh) && !(this.isSigmoid && this.isTanh))){
             throw Error('Cannot have both sigmoid and tanh linearities.');
