@@ -31,15 +31,28 @@ class FeedforwardNeuralNetwork {
      * Build the Neural Network with an array that represent each hidden layer size.
      *
      * @param {Array} layersSize - Array of sizes of each layer.
+     * @param {Array} layerOptions - Array containing the options for each layer
      */
-    buildNetwork(layersSize) {
+    buildNetwork(layersSize, layerOptions) {
         layersSize.push(this.outputSize);
+
+        layerOptions = layerOptions || new Array(layersSize.length-1);
+
+        // output layer must be a sigmoid to give probabilities
+        layerOptions.push({nonLinearity:'sigmoid'})
+
+        if(layerOptions.length !== layersSize.length){
+            throw Error('Must have the same number of layer options as layer size');
+        }
 
         this.layers = new Array(layersSize.length);
 
         for (var i = 0; i < layersSize.length; ++i) {
             var inSize = (i == 0) ? this.inputSize : layersSize[i - 1];
-            this.layers[i] = new Layer(inSize, layersSize[i]);
+            
+            var options = layerOptions[i] || undefined;
+
+            this.layers[i] = new Layer(inSize, layersSize[i], options);
         }
 
         this.layers[this.layers.length - 1].isSigmoid = false;
@@ -114,7 +127,9 @@ class FeedforwardNeuralNetwork {
         var learningRate = options.learningRate === undefined ? 0.1 : options.learningRate;
         var momentum = options.momentum === undefined ? 0.1 : options.momentum;
 
-        this.buildNetwork(hiddenLayers);
+        var layerOptions = options.hiddenOptions;
+
+        this.buildNetwork(hiddenLayers, layerOptions);
 
         for (var i = 0; i < iterations; ++i) {
             for (var j = 0; j < predictions.length; ++j) {
