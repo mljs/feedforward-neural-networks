@@ -19,16 +19,9 @@ class Layer {
         this.deltaWeights = Matrix.zeros(1, (1 + inputSize) * outputSize).getRow(0);
         this.weights = randomInitializeWeights(this.deltaWeights.length, inputSize, outputSize);
         
-        this.isSigmoid = options.nonLinearity === 'sigmoid';
-        this.isTanh = options.nonLinearity === 'tanh';
+        this.activationFunctionName = options.nonLinearity
+        activation(this.activationFunctionName, 0) // run once to make sure the function is recognized.
 
-        if(!this.isSigmoid && !this.isTanh){
-            throw Error('Must define non-linearity as sigmoid or tanh.')
-        }
-        // logical XOR, cannot be both at the same time.
-        if(!((this.isSigmoid || this.isTanh) && !(this.isSigmoid && this.isTanh))){
-            throw Error('Cannot have both sigmoid and tanh linearities.');
-        }
     }
 
     /**
@@ -46,10 +39,8 @@ class Layer {
             for (var j = 0; j < this.input.length; ++j) {
                 this.output[i] += this.weights[offs + j] * this.input[j];
             }
-            if (this.isSigmoid)
-                this.output[i] = sigmoid(this.output[i]);
-            if (this.isTanh)
-                this.output[i] = tanh(this.output[i]);
+
+            this.output[i] = activation(this.activationFunctionName, this.output[i]);
 
             offs += this.input.length;
         }
@@ -71,11 +62,7 @@ class Layer {
         for (var i = 0; i < this.output.length; ++i) {
             var delta = error[i];
 
-            if (this.isSigmoid)
-                delta *= sigmoidGradient(this.output[i]);
-
-            if (this.isTanh)
-                delta *= tanhGradient(this.output[i]);
+            delta *= activationGradient(this.activationFunctionName, this.output[i]);
 
             for (var j = 0; j < this.input.length; ++j) {
                 var index = offs + j;
@@ -155,4 +142,105 @@ function tanhGradient(value){
     return 1-Math.pow(value, 2)
 }
 
+/**
+ * Function that caclulates the rectified linear unit (RELU) function at some value
+ * @param value
+ * @returns {number}
+**/
 
+function relu(value) {
+    if (value < 0) {
+        return 0;
+    } else {
+        return value;
+    }
+}
+
+/**
+ * Function that caclulates the derivative of 
+ * RELU function at some RELU value
+ * @param value
+ * @returns {number}
+**/
+
+function reluGradient(value) {
+    if (value < 0) {
+        return 0;
+    } else {
+        return 1
+    }
+}
+
+
+/**
+ * Function that caclulates the leaky rectified linear unit (leaky RELU) 
+ * function at some value
+ * @param value
+ * @returns {number}
+**/
+
+function leakyRelu(value) {
+    if (value < 0) {
+        return 0.001 * value;
+    } else {
+        return value;
+    }
+}
+
+/**
+ * Function that caclulates the derivative of 
+ * leaky RELU function at some leaky RELU value
+ * @param value
+ * @returns {number}
+**/
+
+function leakyReluGradient(value) {
+    if (value < 0) {
+        return 0.001;
+    } else {
+        return 1
+    }
+}
+
+/**
+ * Computes the activation function based on inbuilt activationName
+ * at some value
+ * @param activationName the activation function to use
+ * @param value 
+ * @returns {number}
+**/
+function activation(activationName, value) {
+    if (activationName === 'sigmoid') {
+        return sigmoid(value);
+    } else if (activationName === 'tanh') {
+        return tanh(value);
+    } else if (activationName === 'relu') {
+        return relu(value);
+    } else if (activationName === 'leakyRelu') {
+        return leakyRelu(value);
+    } else {
+        throw Error('Acivation Function '+activationName+' was not recognized.')
+    }
+}
+
+/**
+ * Computes the gradient of the activation function 
+ * based on inbuilt activationName gradients
+ * at some activation function value
+ * @param activationName the activation function gradient to use
+ * @param value of the activation function
+ * @returns {number}
+**/
+function activationGradient(activationName, activationValue) {
+    if (activationName === 'sigmoid') {
+        return sigmoidGradient(activationValue);
+    } else if (activationName === 'tanh') {
+        return tanhGradient(activationValue);
+    } else if (activationName === 'relu') {
+        return reluGradient(activationValue);
+    } else if (activationName === 'leakyRelu') {
+        return leakyReluGradient(activationValue);
+    } else {
+        throw Error('Acivation Function '+activationName+' was not recognized to calculate gradient.')
+    }
+}
