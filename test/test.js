@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var FeedforwardNeuralNetwork = require("..");
+var FeedforwardNeuralNetwork = require('..');
 
 describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
 
@@ -12,13 +12,13 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
         var options = {
             hiddenLayers: [4],
             iterations: 500,
-            learningRate : 0.3,
+            learningRate: 0.3,
             momentum: 0.3
         };
 
         xorNN.train(options);
         var results = xorNN.predict(trainingSet);
-        
+
         (results[0]).should.be.approximately(predictions[0], 3e-1);
         (results[1]).should.be.approximately(predictions[1], 3e-1);
         (results[2]).should.be.approximately(predictions[2], 3e-1);
@@ -33,7 +33,7 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
         var options = {
             hiddenLayers: [3],
             iterations: 500,
-            learningRate : 0.3,
+            learningRate: 0.3,
             momentum: 0.3
         };
         andNN.train(options);
@@ -54,7 +54,7 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
         var options = {
             hiddenLayers: [4],
             iterations: 500,
-            learningRate : 0.3,
+            learningRate: 0.3,
             momentum: 0.3
         };
         orNN.train(options);
@@ -78,7 +78,7 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
         var options = {
             hiddenLayers: [4],
             iterations: 300,
-            learningRate : 0.5,
+            learningRate: 0.5,
             momentum: 0.1
         };
         nn.train(options);
@@ -101,7 +101,7 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
         var options = {
             hiddenLayers: [10],
             iterations: 200,
-            learningRate : 0.1,
+            learningRate: 0.1,
             momentum: 0.1
         };
         nn.train(options);
@@ -113,7 +113,6 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
 });
 
 
-
 describe('Feedforward Neural Networks using Tanh nonlinearity', function () {
 
     it('Training the neural network with XOR operator', function () {
@@ -123,15 +122,15 @@ describe('Feedforward Neural Networks using Tanh nonlinearity', function () {
         var xorNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [4],
-            hiddenOptions: [{nonLinearity:'tanh'}],
+            hiddenOptions: [{nonLinearity: 'tanh'}],
             iterations: 500,
-            learningRate : 0.3,
+            learningRate: 0.3,
             momentum: 0.3
         };
 
         xorNN.train(options);
         var results = xorNN.predict(trainingSet);
-        
+
         (results[0]).should.be.approximately(predictions[0], 3e-1);
         (results[1]).should.be.approximately(predictions[1], 3e-1);
         (results[2]).should.be.approximately(predictions[2], 3e-1);
@@ -145,9 +144,9 @@ describe('Feedforward Neural Networks using Tanh nonlinearity', function () {
         var andNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [3],
-            hiddenOptions: [{nonLinearity:'tanh'}],
+            hiddenOptions: [{nonLinearity: 'tanh'}],
             iterations: 500,
-            learningRate : 0.3,
+            learningRate: 0.3,
             momentum: 0.3
         };
         andNN.train(options);
@@ -167,9 +166,9 @@ describe('Feedforward Neural Networks using Tanh nonlinearity', function () {
         var orNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [4],
-            hiddenOptions: [{nonLinearity:'tanh'}],
+            hiddenOptions: [{nonLinearity: 'tanh'}],
             iterations: 500,
-            learningRate : 0.3,
+            learningRate: 0.3,
             momentum: 0.3
         };
         orNN.train(options);
@@ -192,9 +191,9 @@ describe('Feedforward Neural Networks using Tanh nonlinearity', function () {
         var nn = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [4],
-            hiddenOptions: [{nonLinearity:'tanh'}],
+            hiddenOptions: [{nonLinearity: 'tanh'}],
             iterations: 300,
-            learningRate : 0.5,
+            learningRate: 0.5,
             momentum: 0.1
         };
         nn.train(options);
@@ -216,9 +215,9 @@ describe('Feedforward Neural Networks using Tanh nonlinearity', function () {
         var nn = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [10],
-            hiddenOptions: [{nonLinearity:'tanh'}],
+            hiddenOptions: [{nonLinearity: 'tanh'}],
             iterations: 200,
-            learningRate : 0.1,
+            learningRate: 0.1,
             momentum: 0.1
         };
         nn.train(options);
@@ -237,9 +236,9 @@ describe('Feedforward Neural Networks using Tanh nonlinearity', function () {
         var nn = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
             hiddenLayers: [10, 10],
-            hiddenOptions: [{nonLinearity:'tanh'}, {nonLinearity:'sigmoid'}],
+            hiddenOptions: [{nonLinearity: 'tanh'}, {nonLinearity: 'sigmoid'}],
             iterations: 200,
-            learningRate : 0.1,
+            learningRate: 0.1,
             momentum: 0.1
         };
         nn.train(options);
