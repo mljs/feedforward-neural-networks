@@ -10,12 +10,25 @@ class Layer {
      * @param outputSize
      * @constructor
      */
-    constructor(inputSize, outputSize) {
+    constructor(inputSize, outputSize, options) {
+        
+        options = options || {nonLinearity:'sigmoid'};
+
         this.output = Matrix.zeros(1, outputSize).getRow(0);
         this.input = Matrix.zeros(1, inputSize + 1).getRow(0); //+1 for bias term
         this.deltaWeights = Matrix.zeros(1, (1 + inputSize) * outputSize).getRow(0);
         this.weights = randomInitializeWeights(this.deltaWeights.length, inputSize, outputSize);
-        this.isSigmoid = true;
+        
+        this.isSigmoid = options.nonLinearity === 'sigmoid';
+        this.isTanh = options.nonLinearity === 'tanh';
+
+        if(!this.isSigmoid && !this.isTanh){
+            throw Error('Must define non-linearity as sigmoid or tanh.')
+        }
+        // logical XOR, cannot be both at the same time.
+        if(!((this.isSigmoid || this.isTanh) && !(this.isSigmoid && this.isTanh))){
+            throw Error('Cannot have both sigmoid and tanh linearities.');
+        }
     }
 
     /**
@@ -35,6 +48,8 @@ class Layer {
             }
             if (this.isSigmoid)
                 this.output[i] = sigmoid(this.output[i]);
+            if (this.isTanh)
+                this.output[i] = tanh(this.output[i]);
 
             offs += this.input.length;
         }
@@ -58,6 +73,9 @@ class Layer {
 
             if (this.isSigmoid)
                 delta *= sigmoidGradient(this.output[i]);
+
+            if (this.isTanh)
+                delta *= tanhGradient(this.output[i]);
 
             for (var j = 0; j < this.input.length; ++j) {
                 var index = offs + j;
@@ -97,7 +115,7 @@ function randomInitializeWeights(numberOfWeights, inputSize, outputSize) {
 }
 
 /**
- * Function that calculates the sigmoid (logistic) function.
+ * Function that calculates the sigmoid (logistic) function at some value
  * @param value
  * @returns {number}
  */
@@ -107,9 +125,34 @@ function sigmoid(value) {
 
 /**
  * Function that calculates the derivate of the sigmoid function.
+ * given the value of the sigmoid function at that point
  * @param value
  * @returns {number}
  */
 function sigmoidGradient(value) {
     return value * (1 - value);
 }
+
+/**
+ * Function that caclulates the hyperbolic tangent (tanh) function at some value
+ * @param value
+ * @returns {number}
+**/
+
+function tanh(value) {
+    return Math.tanh(value);
+}
+
+/**
+ * Function that caclulates the derivative of 
+ * hyperbolic tangent (tanh) function given the value
+ * of the hyperbolic tangent function at that point
+ * @param value
+ * @returns {number}
+**/
+
+function tanhGradient(value) {
+    return 1 - Math.pow(value, 2)
+}
+
+
