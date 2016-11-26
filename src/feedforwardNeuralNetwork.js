@@ -18,7 +18,7 @@ class FeedforwardNeuralNetwork {
             this.inputSize = model.inputSize;
             this.outputSize = model.outputSize;
         } else {
-            if (X.length !== Y.length)                {
+            if (X.length !== Y.length) {
                 throw new RangeError('X and Y must have the same size.');
             }
             this.X = X;
@@ -89,7 +89,7 @@ class FeedforwardNeuralNetwork {
         var forwardResult = this.forwardNN(data);
         var error = new Array(forwardResult.length);
 
-        if (typeof (prediction) === 'number')            {
+        if (typeof (prediction) === 'number') {
             prediction = [prediction];
         }
 
@@ -147,7 +147,7 @@ class FeedforwardNeuralNetwork {
      * @return {Array} predictions
      */
     predict(dataset) {
-        if (dataset[0].length !== this.inputSize)            {
+        if (dataset[0].length !== this.inputSize) {
             throw new RangeError('The dataset columns must have the same size of the ' +
                 'input layer');
         }
@@ -172,7 +172,7 @@ class FeedforwardNeuralNetwork {
     }
 
     static load(model) {
-        if (model.name !== 'FNN')            {
+        if (model.name !== 'FNN') {
             throw new RangeError('Invalid model: ' + model.name);
         }
         return new FeedforwardNeuralNetwork(true, model);
