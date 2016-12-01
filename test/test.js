@@ -259,11 +259,11 @@ describe('Feedforward Neural Networks using RELU and LeakyRELU', function () {
 
         var xorNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
-            hiddenLayers: [4],
-            hiddenOptions: [{nonLinearity:'relu'}],
-            iterations: 1000,
-            learningRate : 0.3,
-            momentum: 0.3
+            hiddenLayers: [3,1],
+            hiddenOptions: [{nonLinearity:'relu'}, {nonLinearity:'sigmoid'}],
+            iterations: 3000,
+            learningRate : 0.5,
+            momentum: 0.5
         };
 
         xorNN.train(options);
@@ -281,10 +281,10 @@ describe('Feedforward Neural Networks using RELU and LeakyRELU', function () {
 
         var andNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
-            hiddenLayers: [3],
-            hiddenOptions: [{nonLinearity:'leakyRelu'}],
-            iterations: 500,
-            learningRate : 0.3,
+            hiddenLayers: [3,2],
+            hiddenOptions: [{nonLinearity:'leakyRelu'}, {nonLinearity:'sigmoid'}],
+            iterations: 2000,
+            learningRate : 0.5,
             momentum: 0.3
         };
         andNN.train(options);
@@ -303,10 +303,10 @@ describe('Feedforward Neural Networks using RELU and LeakyRELU', function () {
 
         var orNN = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
-            hiddenLayers: [4],
-            hiddenOptions: [{nonLinearity:'relu'}],
-            iterations: 500,
-            learningRate : 0.3,
+            hiddenLayers: [4,1],
+            hiddenOptions: [{nonLinearity:'relu'}, {nonLinearity:'sigmoid'}],
+            iterations: 2000,
+            learningRate : 0.5,
             momentum: 0.3
         };
         orNN.train(options);
@@ -328,9 +328,9 @@ describe('Feedforward Neural Networks using RELU and LeakyRELU', function () {
 
         var nn = new FeedforwardNeuralNetwork(trainingSet, predictions);
         var options = {
-            hiddenLayers: [4],
-            hiddenOptions: [{nonLinearity:'leakyRelu'}],
-            iterations: 1000,
+            hiddenLayers: [4,4],
+            hiddenOptions: [{nonLinearity:'leakyRelu'}, {nonLinearity:'sigmoid'}],
+            iterations: 2000,
             learningRate : 0.5,
             momentum: 0.1
         };
