@@ -175,7 +175,7 @@ function relu(value) {
 **/
 
 function reluGradient(value) {
-    if (value < 0) {
+    if (value === 0) {
         return 0;
     } else {
         return 1;
@@ -206,7 +206,7 @@ function leakyRelu(value) {
 **/
 
 function leakyReluGradient(value) {
-    if (value < 0) {
+    if (value < 0) { // todo, this needs to be fixed.
         return 0.001;
     } else {
         return 1;
