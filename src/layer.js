@@ -8,19 +8,25 @@ class Layer {
      * and outputs.
      * @param inputSize
      * @param outputSize
+     * @param options: a dictionary of parameters for the layer
+     *               {nonLinearity : 'sigmoid'} 
      * @constructor
      */
     constructor(inputSize, outputSize, options) {
         
-        options = options || {nonLinearity:'sigmoid'};
+        options = options || {nonLinearity: 'sigmoid'};
 
         this.output = Matrix.zeros(1, outputSize).getRow(0);
         this.input = Matrix.zeros(1, inputSize + 1).getRow(0); //+1 for bias term
         this.deltaWeights = Matrix.zeros(1, (1 + inputSize) * outputSize).getRow(0);
         this.weights = randomInitializeWeights(this.deltaWeights.length, inputSize, outputSize);
         
-        this.activationFunctionName = options.nonLinearity
-        activation(this.activationFunctionName, 0) // run once to make sure the function is recognized.
+        if (!ACTIVATION.hasOwnProperty(options.nonLinearity)) {
+            throw ReferenceError('No activation function named' + options.nonLinearity);
+        }
+        this.activation = ACTIVATION[options.nonLinearity];
+        this.activationGradient = ACTIVATION_GRADIENT[options.nonLinearity];
+        this.nonLinearity = options.nonLinearity;
 
     }
 
@@ -40,7 +46,7 @@ class Layer {
                 this.output[i] += this.weights[offs + j] * this.input[j];
             }
 
-            this.output[i] = activation(this.activationFunctionName, this.output[i]);
+            this.output[i] = this.activation(this.output[i]);
 
             offs += this.input.length;
         }
@@ -62,7 +68,7 @@ class Layer {
         for (var i = 0; i < this.output.length; ++i) {
             var delta = error[i];
 
-            delta *= activationGradient(this.activationFunctionName, this.output[i]);
+            delta *= this.activationGradient(this.output[i]);
 
             for (var j = 0; j < this.input.length; ++j) {
                 var index = offs + j;
@@ -139,7 +145,7 @@ function tanh(value){
 **/
 
 function tanhGradient(value){
-    return 1-Math.pow(value, 2)
+    return 1-Math.pow(value, 2);
 }
 
 /**
@@ -167,7 +173,7 @@ function reluGradient(value) {
     if (value < 0) {
         return 0;
     } else {
-        return 1
+        return 1;
     }
 }
 
@@ -198,49 +204,28 @@ function leakyReluGradient(value) {
     if (value < 0) {
         return 0.001;
     } else {
-        return 1
+        return 1;
     }
 }
 
-/**
- * Computes the activation function based on inbuilt activationName
- * at some value
- * @param activationName the activation function to use
- * @param value 
- * @returns {number}
-**/
-function activation(activationName, value) {
-    if (activationName === 'sigmoid') {
-        return sigmoid(value);
-    } else if (activationName === 'tanh') {
-        return tanh(value);
-    } else if (activationName === 'relu') {
-        return relu(value);
-    } else if (activationName === 'leakyRelu') {
-        return leakyRelu(value);
-    } else {
-        throw Error('Acivation Function '+activationName+' was not recognized.')
-    }
-}
 
 /**
- * Computes the gradient of the activation function 
- * based on inbuilt activationName gradients
- * at some activation function value
- * @param activationName the activation function gradient to use
- * @param value of the activation function
- * @returns {number}
+ * A dictionary that contains inbuilt activation functions
 **/
-function activationGradient(activationName, activationValue) {
-    if (activationName === 'sigmoid') {
-        return sigmoidGradient(activationValue);
-    } else if (activationName === 'tanh') {
-        return tanhGradient(activationValue);
-    } else if (activationName === 'relu') {
-        return reluGradient(activationValue);
-    } else if (activationName === 'leakyRelu') {
-        return leakyReluGradient(activationValue);
-    } else {
-        throw Error('Acivation Function '+activationName+' was not recognized to calculate gradient.')
-    }
-}
+var ACTIVATION = {
+    'sigmoid': sigmoid,
+    'tanh': tanh,
+    'relu': relu,
+    'leakyRelu': leakyRelu
+};
+
+/**
+ * A dictionary that contains inbuild activation function gradients
+ * Note: these must be evaluated with the value of the activation function
+**/
+var ACTIVATION_GRADIENT = {
+    'sigmoid': sigmoidGradient,
+    'tanh': tanhGradient,
+    'relu': reluGradient,
+    'leakyRelu': leakyReluGradient
+};
