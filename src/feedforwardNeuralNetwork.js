@@ -39,7 +39,7 @@ class FeedforwardNeuralNetwork {
         layerOptions = layerOptions || new Array(layersSize.length-1);
 
         // output layer must be a sigmoid to give probabilities
-        layerOptions.push({nonLinearity:'sigmoid'})
+        layerOptions.push({nonLinearity: 'sigmoid'})
 
         if(layerOptions.length !== layersSize.length){
             throw Error('Must have the same number of layer options as layer size');

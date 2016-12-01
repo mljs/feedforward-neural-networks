@@ -137,7 +137,7 @@ function sigmoidGradient(value) {
  * @returns {number}
 **/
 
-function tanh(value){
+function tanh(value) {
     return Math.tanh(value);
 }
 
@@ -149,8 +149,9 @@ function tanh(value){
  * @returns {number}
 **/
 
-function tanhGradient(value){
-    return 1-Math.pow(value, 2);
+
+function tanhGradient(value) {
+    return 1 - Math.pow(value, 2);
 }
 
 /**
@@ -181,7 +182,6 @@ function reluGradient(value) {
         return 1;
     }
 }
-
 
 /**
  * Function that caclulates the leaky rectified linear unit (leaky RELU) 
