@@ -30,6 +30,15 @@ __Options__
 
 ### FNN.load(model)
 
+## Activation Functions
+
+These are the activation functions that are currently implemented:
+* `sigmoid`
+* `tanh`
+* `relu`
+* `leakyRelu`
+
+
 ## License
 
 [MIT](./LICENSE)

@@ -55,7 +55,7 @@ class FeedforwardNeuralNetwork {
             this.layers[i] = new Layer(inSize, layersSize[i], options);
         }
 
-        this.layers[this.layers.length - 1].isSigmoid = false;
+        this.layers[this.layers.length - 1].stopActivation = true;
     }
 
     /**
