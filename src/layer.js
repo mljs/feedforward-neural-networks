@@ -27,7 +27,7 @@ class Layer {
         this.activation = ACTIVATION[options.nonLinearity];
         this.activationGradient = ACTIVATION_GRADIENT[options.nonLinearity];
         this.nonLinearity = options.nonLinearity;
-
+        this.stopActivation = false;
     }
 
     /**
@@ -46,7 +46,9 @@ class Layer {
                 this.output[i] += this.weights[offs + j] * this.input[j];
             }
 
-            this.output[i] = this.activation(this.output[i]);
+            if (!this.stopActivation) {
+                this.output[i] = this.activation(this.output[i]);
+            }
 
             offs += this.input.length;
         }
@@ -68,7 +70,10 @@ class Layer {
         for (var i = 0; i < this.output.length; ++i) {
             var delta = error[i];
 
-            delta *= this.activationGradient(this.output[i]);
+            if (!this.stopActivation) {
+                delta *= this.activationGradient(this.output[i]);    
+            }
+            
 
             for (var j = 0; j < this.input.length; ++j) {
                 var index = offs + j;
