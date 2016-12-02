@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var Matrix = require("ml-matrix");
+const Matrix = require('ml-matrix');
 
 class Layer {
     /**
@@ -8,25 +8,26 @@ class Layer {
      * and outputs.
      * @param inputSize
      * @param outputSize
+     * @param [options]
      * @constructor
      */
     constructor(inputSize, outputSize, options) {
-        
-        options = options || {nonLinearity:'sigmoid'};
+
+        options = options || {nonLinearity: 'sigmoid'};
 
         this.output = Matrix.zeros(1, outputSize).getRow(0);
         this.input = Matrix.zeros(1, inputSize + 1).getRow(0); //+1 for bias term
         this.deltaWeights = Matrix.zeros(1, (1 + inputSize) * outputSize).getRow(0);
         this.weights = randomInitializeWeights(this.deltaWeights.length, inputSize, outputSize);
-        
+
         this.isSigmoid = options.nonLinearity === 'sigmoid';
         this.isTanh = options.nonLinearity === 'tanh';
 
-        if(!this.isSigmoid && !this.isTanh){
-            throw Error('Must define non-linearity as sigmoid or tanh.')
+        if (!this.isSigmoid && !this.isTanh) {
+            throw Error('Must define non-linearity as sigmoid or tanh.');
         }
         // logical XOR, cannot be both at the same time.
-        if(!((this.isSigmoid || this.isTanh) && !(this.isSigmoid && this.isTanh))){
+        if (!((this.isSigmoid || this.isTanh) && !(this.isSigmoid && this.isTanh))) {
             throw Error('Cannot have both sigmoid and tanh linearities.');
         }
     }
@@ -34,7 +35,7 @@ class Layer {
     /**
      * Function that performs the forward propagation for the current layer
      * @param {Array} input - output from the previous layer.
-     * @returns {Array} output - output for the next layer.
+     * @return {Array} output - output for the next layer.
      */
     forward(input) {
         this.input = input.slice();
@@ -46,10 +47,12 @@ class Layer {
             for (var j = 0; j < this.input.length; ++j) {
                 this.output[i] += this.weights[offs + j] * this.input[j];
             }
-            if (this.isSigmoid)
+            if (this.isSigmoid)                {
                 this.output[i] = sigmoid(this.output[i]);
-            if (this.isTanh)
+            }
+            if (this.isTanh)                {
                 this.output[i] = tanh(this.output[i]);
+            }
 
             offs += this.input.length;
         }
@@ -60,9 +63,9 @@ class Layer {
     /**
      * Function that performs the backpropagation algorithm for the current layer.
      * @param {Array} error - errors from the previous layer.
-     * @param {Number} learningRate - Learning rate for the actual layer.
-     * @param {Number} momentum - The regularizarion term.
-     * @returns {Array} the error for the next layer.
+     * @param {number} learningRate - Learning rate for the actual layer.
+     * @param {number} momentum - The regularizarion term.
+     * @return {Array} the error for the next layer.
      */
     train(error, learningRate, momentum) {
         var offs = 0;
@@ -71,11 +74,13 @@ class Layer {
         for (var i = 0; i < this.output.length; ++i) {
             var delta = error[i];
 
-            if (this.isSigmoid)
+            if (this.isSigmoid)                {
                 delta *= sigmoidGradient(this.output[i]);
+            }
 
-            if (this.isTanh)
+            if (this.isTanh)                {
                 delta *= tanhGradient(this.output[i]);
+            }
 
             for (var j = 0; j < this.input.length; ++j) {
                 var index = offs + j;
@@ -107,7 +112,7 @@ module.exports = Layer;
  * @param numberOfWeights - size of the array.
  * @param inputSize - number of input of the current layer
  * @param outputSize - number of output of the current layer
- * @returns {Array} random array of numbers.
+ * @return {Array} random array of numbers.
  */
 function randomInitializeWeights(numberOfWeights, inputSize, outputSize) {
     var epsilon = 2.449489742783 / Math.sqrt(inputSize + outputSize);
@@ -117,7 +122,7 @@ function randomInitializeWeights(numberOfWeights, inputSize, outputSize) {
 /**
  * Function that calculates the sigmoid (logistic) function at some value
  * @param value
- * @returns {number}
+ * @return {number}
  */
 function sigmoid(value) {
     return 1.0 / (1 + Math.exp(-value));
@@ -127,7 +132,7 @@ function sigmoid(value) {
  * Function that calculates the derivate of the sigmoid function.
  * given the value of the sigmoid function at that point
  * @param value
- * @returns {number}
+ * @return {number}
  */
 function sigmoidGradient(value) {
     return value * (1 - value);
@@ -136,7 +141,7 @@ function sigmoidGradient(value) {
 /**
  * Function that caclulates the hyperbolic tangent (tanh) function at some value
  * @param value
- * @returns {number}
+ * @return {number}
 **/
 
 function tanh(value) {
@@ -144,15 +149,13 @@ function tanh(value) {
 }
 
 /**
- * Function that caclulates the derivative of 
+ * Function that caclulates the derivative of
  * hyperbolic tangent (tanh) function given the value
  * of the hyperbolic tangent function at that point
  * @param value
- * @returns {number}
+ * @return {number}
 **/
 
 function tanhGradient(value) {
-    return 1 - Math.pow(value, 2)
+    return 1 - Math.pow(value, 2);
 }
-
-

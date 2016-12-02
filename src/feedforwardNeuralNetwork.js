@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-var Layer = require("./layer");
-var Matrix = require("ml-matrix");
+const Layer = require('./layer');
+const Matrix = require('ml-matrix');
 
 class FeedforwardNeuralNetwork {
     /**
@@ -18,8 +18,9 @@ class FeedforwardNeuralNetwork {
             this.inputSize = model.inputSize;
             this.outputSize = model.outputSize;
         } else {
-            if (X.length !== Y.length)
-                throw new RangeError("X and Y must have the same size.");
+            if (X.length !== Y.length) {
+                throw new RangeError('X and Y must have the same size.');
+            }
             this.X = X;
             this.Y = Y;
             this.inputSize = X[0].length;
@@ -36,20 +37,20 @@ class FeedforwardNeuralNetwork {
     buildNetwork(layersSize, layerOptions) {
         layersSize.push(this.outputSize);
 
-        layerOptions = layerOptions || new Array(layersSize.length-1);
+        layerOptions = layerOptions || new Array(layersSize.length - 1);
 
         // output layer must be a sigmoid to give probabilities
-        layerOptions.push({nonLinearity: 'sigmoid'})
+        layerOptions.push({nonLinearity: 'sigmoid'});
 
-        if(layerOptions.length !== layersSize.length){
+        if (layerOptions.length !== layersSize.length) {
             throw Error('Must have the same number of layer options as layer size');
         }
 
         this.layers = new Array(layersSize.length);
 
         for (var i = 0; i < layersSize.length; ++i) {
-            var inSize = (i == 0) ? this.inputSize : layersSize[i - 1];
-            
+            var inSize = (i === 0) ? this.inputSize : layersSize[i - 1];
+
             var options = layerOptions[i] || undefined;
 
             this.layers[i] = new Layer(inSize, layersSize[i], options);
@@ -62,7 +63,7 @@ class FeedforwardNeuralNetwork {
      * Function that applies a forward propagation over the Neural Network
      * with one case of the dataset.
      * @param {Array} input - case of the dataset.
-     * @returns {Array} result of the forward propagation.
+     * @return {Array} result of the forward propagation.
      */
     forwardNN(input) {
         var results = input.slice();
@@ -81,15 +82,16 @@ class FeedforwardNeuralNetwork {
      * of each perceptron in the Neural Network.
      * @param {Array} data - Element of the dataset.
      * @param {Array} prediction - Prediction over the data object.
-     * @param {Number} learningRate
+     * @param {number} learningRate
      * @param momentum - the regularization term.
      */
     iteration(data, prediction, learningRate, momentum) {
         var forwardResult = this.forwardNN(data);
         var error = new Array(forwardResult.length);
 
-        if (typeof(prediction) === 'number')
+        if (typeof (prediction) === 'number') {
             prediction = [prediction];
+        }
 
         for (var i = 0; i < error.length; i++) {
             error[i] = prediction[i] - forwardResult[i];
@@ -142,12 +144,13 @@ class FeedforwardNeuralNetwork {
     /**
      * Function that with a dataset, gives all the predictions for this dataset.
      * @param {Matrix} dataset.
-     * @returns {Array} predictions
+     * @return {Array} predictions
      */
     predict(dataset) {
-        if (dataset[0].length !== this.inputSize)
-            throw new RangeError("The dataset columns must have the same size of the " +
-                "input layer");
+        if (dataset[0].length !== this.inputSize) {
+            throw new RangeError('The dataset columns must have the same size of the ' +
+                'input layer');
+        }
         var result = new Array(dataset.length);
         for (var i = 0; i < dataset.length; i++) {
             result[i] = this.forwardNN(dataset[i]);
@@ -156,7 +159,7 @@ class FeedforwardNeuralNetwork {
         result = new Matrix(result);
         //return result.columns === 1 ? result.getColumn(0) : result;
         return result;
-        
+
     }
 
     toJSON() {
@@ -169,8 +172,9 @@ class FeedforwardNeuralNetwork {
     }
 
     static load(model) {
-        if (model.name !== 'FNN')
+        if (model.name !== 'FNN') {
             throw new RangeError('Invalid model: ' + model.name);
+        }
         return new FeedforwardNeuralNetwork(true, model);
     }
 }
@@ -180,8 +184,8 @@ module.exports = FeedforwardNeuralNetwork;
 /**
  * Function that returns a random number between two numbers (inclusive)
  * @param {number} min - lower bound
- * @param {number} max - upper bound.
- * @returns {number} random number
+ * @param {number} max - upper bound
+ * @return {number} random number
  */
 function randomIntegerFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
