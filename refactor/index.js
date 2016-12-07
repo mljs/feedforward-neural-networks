@@ -49,7 +49,7 @@ class FeedForwardNeuralNetworks {
             inputSize: this.hiddenLayers[this.hiddenLayers.length - 1],
             outputSize: outputSize,
             activationFunction: Math.exp,
-            derivate: val => val,
+            derivate: this.derivateFunction,
             regularization: this.regularization,
             epsilon: this.learningRate
         });
@@ -66,18 +66,34 @@ class FeedForwardNeuralNetworks {
         this.model[0].W = new Matrix([[1.24737338, 0.28295388, 0.69207227], [1.58455078, 1.32056292, -0.69103982]]);
         this.model[1].W = new Matrix([[0.5485338, -0.08738612], [-0.05959343,  0.23705916], [0.08316359, 0.8396252]]);
         for(let i = 0; i < this.iterations; ++i) {
-            let output = this.propagate(features);
+            let probabilities = this.propagate(features);
+            this.backpropagation(features, labels, probabilities);
         }
     }
 
     propagate(X) {
         let input = X;
-        for(let j = 0; j < this.model.length; ++j) {
-            input = this.model[j].forward(input);
+        for(let i = 0; i < this.model.length; ++i) {
+            input = this.model[i].forward(input);
         }
 
         // get probabilities
         return input.divColumnVector(Utils.sumRow(input))
+    }
+
+    backpropagation(features, labels, probabilities) {
+        for(let i = 0; i < probabilities.length; ++i) {
+            probabilities[i][this.dicts.inputs[labels[i]]] -= 1;
+        }
+
+        // remember, the last delta doesn't matter
+        let delta = probabilities;
+        for(let i = this.model.length - 1; i >= 0; --i) {
+            let a = i > 0 ? this.model[i - 1].a : features;
+            delta = this.model[i].backpropagation(delta, a);
+        }
+
+
     }
 
     predict(features) {
@@ -126,32 +142,47 @@ class Layer {
         return z;
     }
 
-    backpropagation(delta) {
-        this.dW = this.a.transpose().mmul(delta);
+    backpropagation(delta, a) {
+        this.dW = a.transpose().mmul(delta);
         this.db = Utils.sumCol(delta);
 
-        let aCopy = this.a.clone();
-        let newDelta = delta.mmul(this.W.transpose()).mmul(aCopy.apply(this.derivate));
-        return newDelta;
+        let aCopy = a.clone();
+        return Utils.elementWiseMul(delta.mmul(this.W.transpose()), aCopy.apply(this.derivate));
     }
 
     update() {
         Utils.matrixSum(this.dW, Utils.scalarMul(this.W, this.regularization));
         Utils.matrixSum(this.W, Utils.scalarMul(this.dW, -this.epsilon));
+        Utils.matrixSum(this.b, Utils.scalarMul(this.db, -this.epsilon));
     }
 }
 
 class Utils {
     static matrixSum(A, B) {
-        if(A.rows !== B.rows || A.cols !== B.cols) {
+        if(A.rows !== B.rows || A.columns !== B.columns) {
             throw new RangeError("Rows and cols must be the same");
         }
 
         for(let i = 0; i < A.rows; ++i) {
-            for(let j = 0; j < B.rows; ++j) {
+            for(let j = 0; j < A.columns; ++j) {
                 A[i][j] += B[i][j];
             }
         }
+        return A;
+    }
+
+    static elementWiseMul(A, B) {
+        if(A.rows !== B.rows || A.columns !== B.columns) {
+            throw new RangeError("Rows and cols must be the same");
+        }
+
+        for(let i = 0; i < A.rows; ++i) {
+            for(let j = 0; j < A.columns; ++j) {
+                A[i][j] *= B[i][j];
+            }
+        }
+
+        return A;
     }
 
     static sumRow(matrix) {
@@ -165,7 +196,7 @@ class Utils {
     }
 
     static sumCol(matrix) {
-        let sum = Matrix.zeros(1, matrix.cols);
+        let sum = Matrix.zeros(1, matrix.columns);
         for(let i = 0; i < matrix.rows; ++i) {
             for(let j = 0; j < matrix.columns; ++j) {
                 sum[0][j] += matrix[i][j];
