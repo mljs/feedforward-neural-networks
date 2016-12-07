@@ -63,8 +63,8 @@ class FeedForwardNeuralNetworks {
         let outputSize = Object.keys(this.dicts.inputs).length;
 
         this.buildNetwork(inputSize, outputSize);
-        this.model[0].W = new Matrix([[1.24737338, 0.28295388, 0.69207227], [1.58455078, 1.32056292, -0.69103982]]);
-        this.model[1].W = new Matrix([[0.5485338, -0.08738612], [-0.05959343,  0.23705916], [0.08316359, 0.8396252]]);
+        //this.model[0].W = new Matrix([[1.24737338, 0.28295388, 0.69207227], [1.58455078, 1.32056292, -0.69103982]]);
+        //this.model[1].W = new Matrix([[0.5485338, -0.08738612], [-0.05959343,  0.23705916], [0.08316359, 0.8396252]]);
         for(let i = 0; i < this.iterations; ++i) {
             let probabilities = this.propagate(features);
             this.backpropagation(features, labels, probabilities);
@@ -99,6 +99,14 @@ class FeedForwardNeuralNetworks {
     }
 
     predict(features) {
+        Matrix.checkMatrix(features);
+        let outputs = new Array(features.rows);
+        let probabilities = this.propagate(features);
+        for(let i = 0; i < features.rows; ++i) {
+            outputs[i] = this.dicts.outputs[probabilities.maxRowIndex(i)[1]];
+        }
+
+        return outputs;
     }
 
     score() {
@@ -232,12 +240,13 @@ class Utils {
     }
 }
 
-let X = [[0, 0], [0, 1], [1, 0], [1, 1]];
-let y = [0, 0, 0, 1];
+let X = new Matrix([[0, 0], [0, 1], [1, 0], [1, 1]]);
+let y = [0, 1, 1, 0];
 
 let fnn = new FeedForwardNeuralNetworks({
-    hiddenLayers: [3],
+    hiddenLayers: [3, 3],
     iterations: 20000
 });
 
 fnn.train(X, y);
+console.log(fnn.predict(X));
