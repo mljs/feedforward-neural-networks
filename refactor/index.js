@@ -93,11 +93,12 @@ class FeedForwardNeuralNetworks {
             delta = this.model[i].backpropagation(delta, a);
         }
 
-
+        for(let i = 0; i < this.model.length; ++i) {
+            this.model[i].update();
+        }
     }
 
     predict(features) {
-
     }
 
     score() {
@@ -151,7 +152,7 @@ class Layer {
     }
 
     update() {
-        Utils.matrixSum(this.dW, Utils.scalarMul(this.W, this.regularization));
+        Utils.matrixSum(this.dW, Utils.scalarMul(this.W.clone(), this.regularization));
         Utils.matrixSum(this.W, Utils.scalarMul(this.dW, -this.epsilon));
         Utils.matrixSum(this.b, Utils.scalarMul(this.db, -this.epsilon));
     }
@@ -207,10 +208,11 @@ class Utils {
 
     static scalarMul(matrix, scalar) {
         for(let i = 0; i < matrix.rows; ++i) {
-            for(let j = 0; j < matrix.cols; ++j) {
+            for(let j = 0; j < matrix.columns; ++j) {
                 matrix[i][j] *= scalar;
             }
         }
+        return matrix;
     }
 
     static dictOutputs(array) {
