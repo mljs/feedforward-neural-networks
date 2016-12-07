@@ -46,3 +46,5 @@ class Layer {
         Utils.matrixSum(this.b, Utils.scalarMul(this.db, -this.epsilon));
     }
 }
+
+module.exports = Layer;

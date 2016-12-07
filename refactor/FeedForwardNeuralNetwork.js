@@ -1,8 +1,9 @@
 "use strict";
 
 let Matrix = require("ml-matrix");
-let Layer = require("./Layer");
-let Utils = require("./Utils");
+
+let Layer = require("./Layer.js");
+let Utils = require("./Utils.js");
 
 class FeedForwardNeuralNetworks {
     constructor(options) {
