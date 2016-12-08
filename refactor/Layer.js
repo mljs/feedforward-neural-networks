@@ -1,7 +1,9 @@
 "use strict";
 
 let Matrix = require("ml-matrix");
+
 let Utils = require("./Utils");
+const ACTIVATION_FUNCTIONS = require("./ActivationFunctions");
 
 class Layer {
     constructor(options) {
@@ -9,20 +11,30 @@ class Layer {
         this.outputSize = options.outputSize;
         this.regularization = options.regularization;
         this.epsilon = options.epsilon;
+        this.activation = options.activation;
 
         this.activationFunction = function(i, j) {
-            this[i][j] = options.activationFunction(this[i][j]);
+            this[i][j] = ACTIVATION_FUNCTIONS[options.activation].activation(this[i][j]);
         };
         this.derivate = function(i, j) {
-            this[i][j] = options.derivate(this[i][j]);
+            this[i][j] = ACTIVATION_FUNCTIONS[options.activation].derivate(this[i][j]);
         };
 
-        this.W = Matrix.rand(this.inputSize, this.outputSize);
-        this.b = Matrix.zeros(1, this.outputSize);
+        if(options.model) {
+            // load model
+            this.W = Matrix.checkMatrix(options.W);
+            this.b = Matrix.checkMatrix(options.b);
 
-        this.W.apply(function(i, j) {
-            this[i][j] /= Math.sqrt(options.inputSize);
-        });
+        } else {
+            // default constructor
+
+            this.W = Matrix.rand(this.inputSize, this.outputSize);
+            this.b = Matrix.zeros(1, this.outputSize);
+
+            this.W.apply(function(i, j) {
+                this[i][j] /= Math.sqrt(options.inputSize);
+            });
+        }
     }
 
     forward(X) {
@@ -45,6 +57,27 @@ class Layer {
         Utils.matrixSum(this.W, Utils.scalarMul(this.dW, -this.epsilon));
         Utils.matrixSum(this.b, Utils.scalarMul(this.db, -this.epsilon));
     }
+
+    toJSON() {
+        return {
+            model: "Layer",
+            inputSize: this.inputSize,
+            outputSize: this.outputSize,
+            regularization: this.regularization,
+            epsilon: this.epsilon,
+            activation: this.activation,
+            W: this.W,
+            b: this.b
+        };
+    }
+
+    static load(model) {
+        if(model.model !== "Layer") {
+            throw new RangeError("the current model is not a Layer model");
+        }
+        return new Layer(model);
+    }
+
 }
 
 module.exports = Layer;

@@ -2,6 +2,7 @@
 
 let Matrix = require("ml-matrix");
 
+
 class Utils {
     static matrixSum(A, B) {
         if(A.rows !== B.rows || A.columns !== B.columns) {
