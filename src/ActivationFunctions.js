@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 const ACTIVATION_FUNCTIONS = {
-    "tanh": {
+    'tanh': {
         activation: Math.tanh,
         derivate: val => 1 - (val * val)
     },
-    "exp": {
+    'exp': {
         activation: Math.exp,
         derivate: val => 1 - (val * val)
     }

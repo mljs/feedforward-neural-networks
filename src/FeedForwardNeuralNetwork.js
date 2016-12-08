@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-let Matrix = require("ml-matrix");
+let Matrix = require('ml-matrix');
 
-let Layer = require("./Layer");
-let Utils = require("./Utils");
-const ACTIVATION_FUNCTIONS = require("./ActivationFunctions");
+let Layer = require('./Layer');
+let Utils = require('./Utils');
+const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
 
 class FeedForwardNeuralNetworks {
     constructor(options) {
         if (options === undefined) options = {};
-        if(options.model) {
+        if (options.model) {
             // load network
             this.hiddenLayers = options.hiddenLayers;
             this.iterations = options.iterations;
@@ -19,7 +19,7 @@ class FeedForwardNeuralNetworks {
             this.activation = options.activation;
             this.model = new Array(options.layers.length);
 
-            for(let i = 0; i < this.model.length; ++i) {
+            for (let i = 0; i < this.model.length; ++i) {
                 this.model[i] = Layer.load(options.layers[i]);
             }
         } else {
@@ -31,10 +31,10 @@ class FeedForwardNeuralNetworks {
             //this.momentum = options.momentum === undefined ? 0.1 : options.momentum;
             this.regularization = options.regularization === undefined ? 0.01 : options.regularization;
 
-            this.activation = options.activation === undefined ? "tanh" : options.activation;
-            if(!this.activation in Object.keys(ACTIVATION_FUNCTIONS)) {
-                console.warn("Setting default activation function: 'tanh'");
-                this.activation = "tanh";
+            this.activation = options.activation === undefined ? 'tanh' : options.activation;
+            if (!(this.activation in Object.keys(ACTIVATION_FUNCTIONS))) {
+                //console.warn("Setting default activation function: 'tanh'");
+                this.activation = 'tanh';
             }
         }
     }
@@ -53,7 +53,7 @@ class FeedForwardNeuralNetworks {
         });
 
         // hidden layers
-        for(let i = 1; i < this.hiddenLayers.length; ++i) {
+        for (let i = 1; i < this.hiddenLayers.length; ++i) {
             this.model[i] = new Layer({
                 inputSize: this.hiddenLayers[i - 1],
                 outputSize: this.hiddenLayers[i],
@@ -67,7 +67,7 @@ class FeedForwardNeuralNetworks {
         this.model[size - 1] = new Layer({
             inputSize: this.hiddenLayers[this.hiddenLayers.length - 1],
             outputSize: outputSize,
-            activation: "exp",
+            activation: 'exp',
             regularization: this.regularization,
             epsilon: this.learningRate
         });
@@ -82,7 +82,7 @@ class FeedForwardNeuralNetworks {
 
         this.buildNetwork(inputSize, outputSize);
 
-        for(let i = 0; i < this.iterations; ++i) {
+        for (let i = 0; i < this.iterations; ++i) {
             let probabilities = this.propagate(X);
             this.backpropagation(X, y, probabilities);
         }
@@ -90,27 +90,27 @@ class FeedForwardNeuralNetworks {
 
     propagate(X) {
         let input = X;
-        for(let i = 0; i < this.model.length; ++i) {
+        for (let i = 0; i < this.model.length; ++i) {
             input = this.model[i].forward(input);
         }
 
         // get probabilities
-        return input.divColumnVector(Utils.sumRow(input))
+        return input.divColumnVector(Utils.sumRow(input));
     }
 
     backpropagation(features, labels, probabilities) {
-        for(let i = 0; i < probabilities.length; ++i) {
+        for (let i = 0; i < probabilities.length; ++i) {
             probabilities[i][this.dicts.inputs[labels[i]]] -= 1;
         }
 
         // remember, the last delta doesn't matter
         let delta = probabilities;
-        for(let i = this.model.length - 1; i >= 0; --i) {
+        for (let i = this.model.length - 1; i >= 0; --i) {
             let a = i > 0 ? this.model[i - 1].a : features;
             delta = this.model[i].backpropagation(delta, a);
         }
 
-        for(let i = 0; i < this.model.length; ++i) {
+        for (let i = 0; i < this.model.length; ++i) {
             this.model[i].update();
         }
     }
@@ -119,7 +119,7 @@ class FeedForwardNeuralNetworks {
         X = Matrix.checkMatrix(X);
         let outputs = new Array(X.rows);
         let probabilities = this.propagate(X);
-        for(let i = 0; i < X.rows; ++i) {
+        for (let i = 0; i < X.rows; ++i) {
             outputs[i] = this.dicts.outputs[probabilities.maxRowIndex(i)[1]];
         }
 
@@ -132,7 +132,7 @@ class FeedForwardNeuralNetworks {
 
     toJSON() {
         let model = {
-            model: "FNN",
+            model: 'FNN',
             hiddenLayers: this.hiddenLayers,
             iterations: this.iterations,
             learningRate: this.learningRate,
@@ -142,7 +142,7 @@ class FeedForwardNeuralNetworks {
             layers: new Array(this.model.length)
         };
 
-        for(let i = 0; i < this.model.length; ++i) {
+        for (let i = 0; i < this.model.length; ++i) {
             model.layers[i] = this.model[i].toJSON();
         }
 
@@ -151,8 +151,8 @@ class FeedForwardNeuralNetworks {
 
 
     static load(model) {
-        if(model.model !== "FNN") {
-            throw new RangeError("the current model is not a feed forward network");
+        if (model.model !== 'FNN') {
+            throw new RangeError('the current model is not a feed forward network');
         }
 
         return new FeedForwardNeuralNetworks(model);

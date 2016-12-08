@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./feedforwardNeuralNetwork');
+module.exports = require('./FeedForwardNeuralNetwork');

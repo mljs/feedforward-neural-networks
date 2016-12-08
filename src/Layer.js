@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-let Matrix = require("ml-matrix");
+let Matrix = require('ml-matrix');
 
-let Utils = require("./Utils");
-const ACTIVATION_FUNCTIONS = require("./ActivationFunctions");
+let Utils = require('./Utils');
+const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
 
 class Layer {
     constructor(options) {
@@ -13,14 +13,14 @@ class Layer {
         this.epsilon = options.epsilon;
         this.activation = options.activation;
 
-        this.activationFunction = function(i, j) {
+        this.activationFunction = function (i, j) {
             this[i][j] = ACTIVATION_FUNCTIONS[options.activation].activation(this[i][j]);
         };
-        this.derivate = function(i, j) {
+        this.derivate = function (i, j) {
             this[i][j] = ACTIVATION_FUNCTIONS[options.activation].derivate(this[i][j]);
         };
 
-        if(options.model) {
+        if (options.model) {
             // load model
             this.W = Matrix.checkMatrix(options.W);
             this.b = Matrix.checkMatrix(options.b);
@@ -31,7 +31,7 @@ class Layer {
             this.W = Matrix.rand(this.inputSize, this.outputSize);
             this.b = Matrix.zeros(1, this.outputSize);
 
-            this.W.apply(function(i, j) {
+            this.W.apply(function (i, j) {
                 this[i][j] /= Math.sqrt(options.inputSize);
             });
         }
@@ -60,7 +60,7 @@ class Layer {
 
     toJSON() {
         return {
-            model: "Layer",
+            model: 'Layer',
             inputSize: this.inputSize,
             outputSize: this.outputSize,
             regularization: this.regularization,
@@ -72,8 +72,8 @@ class Layer {
     }
 
     static load(model) {
-        if(model.model !== "Layer") {
-            throw new RangeError("the current model is not a Layer model");
+        if (model.model !== 'Layer') {
+            throw new RangeError('the current model is not a Layer model');
         }
         return new Layer(model);
     }
