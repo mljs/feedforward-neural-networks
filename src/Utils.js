@@ -4,6 +4,12 @@ let Matrix = require('ml-matrix');
 
 
 class Utils {
+    /**
+     * Apply matrix sum between two matrices and retrieves the result over the first argument matrix.
+     * @param A {Matrix}
+     * @param B {Matrix}
+     * @returns {Matrix} A
+     */
     static matrixSum(A, B) {
         if (A.rows !== B.rows || A.columns !== B.columns) {
             throw new RangeError('Rows and cols must be the same');
@@ -17,6 +23,12 @@ class Utils {
         return A;
     }
 
+    /**
+     * Apply matrix multiplication element by element and retrieves the result over the first argument matrix.
+     * @param A {Matrix}
+     * @param B {Matrix}
+     * @returns {Matrix} A
+     */
     static elementWiseMul(A, B) {
         if (A.rows !== B.rows || A.columns !== B.columns) {
             throw new RangeError('Rows and cols must be the same');
@@ -31,6 +43,11 @@ class Utils {
         return A;
     }
 
+    /**
+     * Retrieves the sum at each row of the given matrix.
+     * @param matrix {Matrix}
+     * @returns {Matrix}
+     */
     static sumRow(matrix) {
         let sum = Matrix.zeros(matrix.rows, 1);
         for (let i = 0; i < matrix.rows; ++i) {
@@ -41,6 +58,11 @@ class Utils {
         return sum;
     }
 
+    /**
+     * Retrieves the sum at each column of the given matrix.
+     * @param matrix {Matrix}
+     * @returns {Matrix}
+     */
     static sumCol(matrix) {
         let sum = Matrix.zeros(1, matrix.columns);
         for (let i = 0; i < matrix.rows; ++i) {
@@ -51,6 +73,12 @@ class Utils {
         return sum;
     }
 
+    /**
+     * Apply scalar multiplication over a matrix (inplace).
+     * @param matrix {Matrix}
+     * @param scalar {Number}
+     * @returns {Matrix}
+     */
     static scalarMul(matrix, scalar) {
         for (let i = 0; i < matrix.rows; ++i) {
             for (let j = 0; j < matrix.columns; ++j) {
@@ -60,6 +88,12 @@ class Utils {
         return matrix;
     }
 
+    /**
+     * Method that given an array of labels(predictions), returns two dictionaries, one to transform from labels to
+     * numbers and other in the reverse way
+     * @param array
+     * @returns {{inputs: {}, outputs: {}}}
+     */
     static dictOutputs(array) {
         let inputs = {}, outputs = {}, l = array.length, index = 0;
         for (let i = 0; i < l; i += 1) {

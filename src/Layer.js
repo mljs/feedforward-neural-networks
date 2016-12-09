@@ -6,6 +6,15 @@ let Utils = require('./Utils');
 const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
 
 class Layer {
+    /**
+     * Create a new layer with the given options
+     * @param options
+     * @param {Number} [options.inputSize] - Number of conections that enter the neurons.
+     * @param {Number} [options.outputSize] - Number of conections that leave the neurons.
+     * @param {Number} [options.regularization] - Regularization parameter.
+     * @param {Number} [options.epsilon] - Learning rate parameter.
+     * @param {String} [options.activation] - Activation function parameter from the FeedForwardNeuralNetwork class.
+     */
     constructor(options) {
         this.inputSize = options.inputSize;
         this.outputSize = options.outputSize;
@@ -37,6 +46,11 @@ class Layer {
         }
     }
 
+    /**
+     * propagate the given input through the current layer.
+     * @param {Matrix} X - input.
+     * @returns {Matrix} output at the current layer.
+     */
     forward(X) {
         let z = X.mmul(this.W).addRowVector(this.b);
         z.apply(this.activationFunction);
@@ -44,6 +58,12 @@ class Layer {
         return z;
     }
 
+    /**
+     * apply backpropagation algorithm at the current layer
+     * @param delta {Matrix} - delta values estimated at the following layer.
+     * @param a {Matrix} - 'a' values from the following layer.
+     * @returns {Matrix} the new delta values for the next layer.
+     */
     backpropagation(delta, a) {
         this.dW = a.transpose().mmul(delta);
         this.db = Utils.sumCol(delta);
@@ -52,12 +72,19 @@ class Layer {
         return Utils.elementWiseMul(delta.mmul(this.W.transpose()), aCopy.apply(this.derivate));
     }
 
+    /**
+     * Function that updates the weights at the current layer with the derivatives.
+     */
     update() {
         Utils.matrixSum(this.dW, Utils.scalarMul(this.W.clone(), this.regularization));
         Utils.matrixSum(this.W, Utils.scalarMul(this.dW, -this.epsilon));
         Utils.matrixSum(this.b, Utils.scalarMul(this.db, -this.epsilon));
     }
 
+    /**
+     * Export the current layer to JSON.
+     * @returns {Object} model
+     */
     toJSON() {
         return {
             model: 'Layer',
@@ -71,6 +98,11 @@ class Layer {
         };
     }
 
+    /**
+     * Creates a new Layer with the given model.
+     * @param model
+     * @returns {Layer}
+     */
     static load(model) {
         if (model.model !== 'Layer') {
             throw new RangeError('the current model is not a Layer model');
