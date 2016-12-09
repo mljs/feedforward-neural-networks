@@ -9,10 +9,6 @@ const ACTIVATION_FUNCTIONS = {
         activation: Math.tanh,
         derivate: val => 1 - (val * val)
     },
-    'exp': {
-        activation: Math.exp,
-        derivate: val => 1 - (val * val)
-    },
     'identity': {
         activation: val => val,
         derivate: () => 1

@@ -3,6 +3,7 @@
 var Matrix = require('ml-matrix');
 
 var Layer = require('./Layer');
+var OutputLayer = require('./OutputLayer');
 var Utils = require('./Utils');
 const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
 
@@ -30,9 +31,10 @@ class FeedForwardNeuralNetworks {
             this.activation = options.activation;
             this.model = new Array(options.layers.length);
 
-            for (var i = 0; i < this.model.length; ++i) {
+            for (var i = 0; i < this.model.length - 1; ++i) {
                 this.model[i] = Layer.load(options.layers[i]);
             }
+            this.model[this.model.length - 1] = OutputLayer.load(options.layers[this.model.length - 1]);
         } else {
             // default constructor
             this.hiddenLayers = options.hiddenLayers === undefined ? [10] : options.hiddenLayers;
@@ -80,10 +82,10 @@ class FeedForwardNeuralNetworks {
         }
 
         // output layer
-        this.model[size - 1] = new Layer({
+        this.model[size - 1] = new OutputLayer({
             inputSize: this.hiddenLayers[this.hiddenLayers.length - 1],
             outputSize: outputSize,
-            activation: 'exp',
+            activation: this.activation,
             regularization: this.regularization,
             epsilon: this.learningRate
         });
@@ -117,6 +119,7 @@ class FeedForwardNeuralNetworks {
     propagate(X) {
         var input = X;
         for (var i = 0; i < this.model.length; ++i) {
+            //console.log(i);
             input = this.model[i].forward(input);
         }
 

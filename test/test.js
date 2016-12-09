@@ -72,7 +72,7 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
             var model = JSON.parse(JSON.stringify(orNN));
             var networkNN = FeedforwardNeuralNetwork.load(model);
 
-            var results = networkNN .predict(trainingSet);
+            var results = networkNN.predict(trainingSet);
 
             (results[0]).should.be.approximately(predictions[0], 3e-1);
             (results[1]).should.be.approximately(predictions[1], 3e-1);
@@ -113,7 +113,7 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
             var options = {
                 hiddenLayers: [20],
                 iterations: 1000,
-                learningRate: 0.1,
+                learningRate: 0.01,
                 activation: functions[i]
             };
             var nn = new FeedforwardNeuralNetwork(options);
