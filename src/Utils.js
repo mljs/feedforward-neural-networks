@@ -6,9 +6,9 @@ let Matrix = require('ml-matrix');
 class Utils {
     /**
      * Apply matrix sum between two matrices and retrieves the result over the first argument matrix.
-     * @param A {Matrix}
-     * @param B {Matrix}
-     * @returns {Matrix} A
+     * @param {Matrix} A
+     * @param {Matrix} B
+     * @return {Matrix} A
      */
     static matrixSum(A, B) {
         if (A.rows !== B.rows || A.columns !== B.columns) {
@@ -25,9 +25,9 @@ class Utils {
 
     /**
      * Apply matrix multiplication element by element and retrieves the result over the first argument matrix.
-     * @param A {Matrix}
-     * @param B {Matrix}
-     * @returns {Matrix} A
+     * @param {Matrix} A
+     * @param {Matrix} B
+     * @return {Matrix} A
      */
     static elementWiseMul(A, B) {
         if (A.rows !== B.rows || A.columns !== B.columns) {
@@ -45,8 +45,8 @@ class Utils {
 
     /**
      * Retrieves the sum at each row of the given matrix.
-     * @param matrix {Matrix}
-     * @returns {Matrix}
+     * @param {Matrix} matrix
+     * @return {Matrix}
      */
     static sumRow(matrix) {
         let sum = Matrix.zeros(matrix.rows, 1);
@@ -60,8 +60,8 @@ class Utils {
 
     /**
      * Retrieves the sum at each column of the given matrix.
-     * @param matrix {Matrix}
-     * @returns {Matrix}
+     * @param {Matrix} matrix
+     * @return {Matrix}
      */
     static sumCol(matrix) {
         let sum = Matrix.zeros(1, matrix.columns);
@@ -75,9 +75,9 @@ class Utils {
 
     /**
      * Apply scalar multiplication over a matrix (inplace).
-     * @param matrix {Matrix}
-     * @param scalar {Number}
-     * @returns {Matrix}
+     * @param {Matrix} matrix
+     * @param {number} scalar
+     * @return {Matrix}
      */
     static scalarMul(matrix, scalar) {
         for (let i = 0; i < matrix.rows; ++i) {
@@ -91,8 +91,8 @@ class Utils {
     /**
      * Method that given an array of labels(predictions), returns two dictionaries, one to transform from labels to
      * numbers and other in the reverse way
-     * @param array
-     * @returns {{inputs: {}, outputs: {}}}
+     * @param {Array} array
+     * @return {object}
      */
     static dictOutputs(array) {
         let inputs = {}, outputs = {}, l = array.length, index = 0;

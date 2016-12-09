@@ -10,12 +10,12 @@ class FeedForwardNeuralNetworks {
 
     /**
      * Create a new Feedforword neural network model.
-     * @param {Object} options
+     * @param {object} options
      * @param {Array} [options.hiddenLayers] - Array that contains the sizes of the hidden layers.
-     * @oaram {Number} [options.iterations] - Number of iterations at the training step.
-     * @param {Number} [options.learningRate] - Learning rate of the neural net (also known as epsilon).
-     * @poram {Number} [options.regularization] - Regularization parameter af the neural net.
-     * @poram {String} [options.activation] - activation function to be used. (options: 'tanh'(default),
+     * @oaram {number} [options.iterations] - Number of iterations at the training step.
+     * @param {number} [options.learningRate] - Learning rate of the neural net (also known as epsilon).
+     * @poram {number} [options.regularization] - Regularization parameter af the neural net.
+     * @poram {string} [options.activation] - activation function to be used. (options: 'tanh'(default),
      * 'identity', 'logistic', 'arctan', 'softsign', 'relu', 'softplus', 'bent', 'sinusoid', 'sinc', 'gaussian').
      */
     constructor(options) {
@@ -52,8 +52,8 @@ class FeedForwardNeuralNetworks {
 
     /**
      * Function that build and initialize the neural net.
-     * @param {Number} inputSize - total of features to fit.
-     * @param {Number} outputSize - total of labels of the prediction set.
+     * @param {number} inputSize - total of features to fit.
+     * @param {number} outputSize - total of labels of the prediction set.
      */
     buildNetwork(inputSize, outputSize) {
         let size = 2 + (this.hiddenLayers.length - 1);
@@ -91,8 +91,8 @@ class FeedForwardNeuralNetworks {
 
     /**
      * Train the neural net with the given features and labels.
-     * @param features
-     * @param labels
+     * @param {Matrix|Array} features
+     * @param {Matrix|Array} labels
      */
     train(features, labels) {
         features = Matrix.checkMatrix(features);
@@ -112,7 +112,7 @@ class FeedForwardNeuralNetworks {
     /**
      * Propagate the input(training set) and retrives the probabilities of each class.
      * @param {Matrix} X
-     * @returns {Matrix} probabilities of each class.
+     * @return {Matrix} probabilities of each class.
      */
     propagate(X) {
         let input = X;
@@ -150,8 +150,8 @@ class FeedForwardNeuralNetworks {
 
     /**
      * Predict the output given the feature set.
-     * @param features
-     * @returns {Array}
+     * @param {Array|Matrix} features
+     * @return {Array}
      */
     predict(features) {
         features = Matrix.checkMatrix(features);
@@ -166,7 +166,7 @@ class FeedForwardNeuralNetworks {
 
     /**
      * Export the current model to JSOM.
-     * @returns {Object} model
+     * @return {object} model
      */
     toJSON() {
         let model = {
@@ -189,8 +189,8 @@ class FeedForwardNeuralNetworks {
 
     /**
      * Load a Feedforward Neural Network with the current model.
-     * @param model
-     * @returns {FeedForwardNeuralNetworks}
+     * @param {object} model
+     * @return {FeedForwardNeuralNetworks}
      */
     static load(model) {
         if (model.model !== 'FNN') {

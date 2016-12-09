@@ -8,12 +8,12 @@ const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
 class Layer {
     /**
      * Create a new layer with the given options
-     * @param options
-     * @param {Number} [options.inputSize] - Number of conections that enter the neurons.
-     * @param {Number} [options.outputSize] - Number of conections that leave the neurons.
-     * @param {Number} [options.regularization] - Regularization parameter.
-     * @param {Number} [options.epsilon] - Learning rate parameter.
-     * @param {String} [options.activation] - Activation function parameter from the FeedForwardNeuralNetwork class.
+     * @param {object} options
+     * @param {number} [options.inputSize] - Number of conections that enter the neurons.
+     * @param {number} [options.outputSize] - Number of conections that leave the neurons.
+     * @param {number} [options.regularization] - Regularization parameter.
+     * @param {number} [options.epsilon] - Learning rate parameter.
+     * @param {string} [options.activation] - Activation function parameter from the FeedForwardNeuralNetwork class.
      */
     constructor(options) {
         this.inputSize = options.inputSize;
@@ -49,7 +49,7 @@ class Layer {
     /**
      * propagate the given input through the current layer.
      * @param {Matrix} X - input.
-     * @returns {Matrix} output at the current layer.
+     * @return {Matrix} output at the current layer.
      */
     forward(X) {
         let z = X.mmul(this.W).addRowVector(this.b);
@@ -60,9 +60,9 @@ class Layer {
 
     /**
      * apply backpropagation algorithm at the current layer
-     * @param delta {Matrix} - delta values estimated at the following layer.
-     * @param a {Matrix} - 'a' values from the following layer.
-     * @returns {Matrix} the new delta values for the next layer.
+     * @param {Matrix} delta - delta values estimated at the following layer.
+     * @param {Matrix} a - 'a' values from the following layer.
+     * @return {Matrix} the new delta values for the next layer.
      */
     backpropagation(delta, a) {
         this.dW = a.transpose().mmul(delta);
@@ -83,7 +83,7 @@ class Layer {
 
     /**
      * Export the current layer to JSON.
-     * @returns {Object} model
+     * @return {object} model
      */
     toJSON() {
         return {
@@ -100,8 +100,8 @@ class Layer {
 
     /**
      * Creates a new Layer with the given model.
-     * @param model
-     * @returns {Layer}
+     * @param {object} model
+     * @return {Layer}
      */
     static load(model) {
         if (model.model !== 'Layer') {
