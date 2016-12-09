@@ -1,9 +1,9 @@
 'use strict';
 
-let Matrix = require('ml-matrix');
+var Matrix = require('ml-matrix');
 
-let Layer = require('./Layer');
-let Utils = require('./Utils');
+var Layer = require('./Layer');
+var Utils = require('./Utils');
 const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
 
 class FeedForwardNeuralNetworks {
@@ -30,7 +30,7 @@ class FeedForwardNeuralNetworks {
             this.activation = options.activation;
             this.model = new Array(options.layers.length);
 
-            for (let i = 0; i < this.model.length; ++i) {
+            for (var i = 0; i < this.model.length; ++i) {
                 this.model[i] = Layer.load(options.layers[i]);
             }
         } else {
@@ -56,7 +56,7 @@ class FeedForwardNeuralNetworks {
      * @param {number} outputSize - total of labels of the prediction set.
      */
     buildNetwork(inputSize, outputSize) {
-        let size = 2 + (this.hiddenLayers.length - 1);
+        var size = 2 + (this.hiddenLayers.length - 1);
         this.model = new Array(size);
 
         // input layer
@@ -69,7 +69,7 @@ class FeedForwardNeuralNetworks {
         });
 
         // hidden layers
-        for (let i = 1; i < this.hiddenLayers.length; ++i) {
+        for (var i = 1; i < this.hiddenLayers.length; ++i) {
             this.model[i] = new Layer({
                 inputSize: this.hiddenLayers[i - 1],
                 outputSize: this.hiddenLayers[i],
@@ -98,13 +98,13 @@ class FeedForwardNeuralNetworks {
         features = Matrix.checkMatrix(features);
         this.dicts = Utils.dictOutputs(labels);
 
-        let inputSize = features.columns;
-        let outputSize = Object.keys(this.dicts.inputs).length;
+        var inputSize = features.columns;
+        var outputSize = Object.keys(this.dicts.inputs).length;
 
         this.buildNetwork(inputSize, outputSize);
 
-        for (let i = 0; i < this.iterations; ++i) {
-            let probabilities = this.propagate(features);
+        for (var i = 0; i < this.iterations; ++i) {
+            var probabilities = this.propagate(features);
             this.backpropagation(features, labels, probabilities);
         }
     }
@@ -115,8 +115,8 @@ class FeedForwardNeuralNetworks {
      * @return {Matrix} probabilities of each class.
      */
     propagate(X) {
-        let input = X;
-        for (let i = 0; i < this.model.length; ++i) {
+        var input = X;
+        for (var i = 0; i < this.model.length; ++i) {
             input = this.model[i].forward(input);
         }
 
@@ -132,18 +132,18 @@ class FeedForwardNeuralNetworks {
      * @param {Matrix} probabilities - probabilities of each class of the feature set.
      */
     backpropagation(features, labels, probabilities) {
-        for (let i = 0; i < probabilities.length; ++i) {
+        for (var i = 0; i < probabilities.length; ++i) {
             probabilities[i][this.dicts.inputs[labels[i]]] -= 1;
         }
 
         // remember, the last delta doesn't matter
-        let delta = probabilities;
-        for (let i = this.model.length - 1; i >= 0; --i) {
-            let a = i > 0 ? this.model[i - 1].a : features;
+        var delta = probabilities;
+        for (var i = this.model.length - 1; i >= 0; --i) {
+            var a = i > 0 ? this.model[i - 1].a : features;
             delta = this.model[i].backpropagation(delta, a);
         }
 
-        for (let i = 0; i < this.model.length; ++i) {
+        for (var i = 0; i < this.model.length; ++i) {
             this.model[i].update();
         }
     }
@@ -155,9 +155,9 @@ class FeedForwardNeuralNetworks {
      */
     predict(features) {
         features = Matrix.checkMatrix(features);
-        let outputs = new Array(features.rows);
-        let probabilities = this.propagate(features);
-        for (let i = 0; i < features.rows; ++i) {
+        var outputs = new Array(features.rows);
+        var probabilities = this.propagate(features);
+        for (var i = 0; i < features.rows; ++i) {
             outputs[i] = this.dicts.outputs[probabilities.maxRowIndex(i)[1]];
         }
 
@@ -169,7 +169,7 @@ class FeedForwardNeuralNetworks {
      * @return {object} model
      */
     toJSON() {
-        let model = {
+        var model = {
             model: 'FNN',
             hiddenLayers: this.hiddenLayers,
             iterations: this.iterations,
@@ -180,7 +180,7 @@ class FeedForwardNeuralNetworks {
             layers: new Array(this.model.length)
         };
 
-        for (let i = 0; i < this.model.length; ++i) {
+        for (var i = 0; i < this.model.length; ++i) {
             model.layers[i] = this.model[i].toJSON();
         }
 

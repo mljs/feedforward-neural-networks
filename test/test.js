@@ -1,29 +1,29 @@
 'use strict';
 
-let Matrix = require('ml-matrix');
+var Matrix = require('ml-matrix');
 
-let FeedforwardNeuralNetwork = require('..');
-let ACTIVATION_FUNCTIONS = require('../src/ActivationFunctions');
+var FeedforwardNeuralNetwork = require('..');
+var ACTIVATION_FUNCTIONS = require('../src/ActivationFunctions');
 
 describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
 
-    let functions = Object.keys(ACTIVATION_FUNCTIONS);
+    var functions = Object.keys(ACTIVATION_FUNCTIONS);
 
     it('Training the neural network with XOR operator', function () {
-        let trainingSet = new Matrix([[0, 0], [0, 1], [1, 0], [1, 1]]);
-        let predictions = [false, true, true, false];
+        var trainingSet = new Matrix([[0, 0], [0, 1], [1, 0], [1, 1]]);
+        var predictions = [false, true, true, false];
 
-        for (let i = 0; i < functions.length; ++i) {
-            let options = {
+        for (var i = 0; i < functions.length; ++i) {
+            var options = {
                 hiddenLayers: [4],
                 iterations: 500,
                 learningRate: 0.3,
                 activation: functions[i]
             };
-            let xorNN = new FeedforwardNeuralNetwork(options);
+            var xorNN = new FeedforwardNeuralNetwork(options);
 
             xorNN.train(trainingSet, predictions);
-            let results = xorNN.predict(trainingSet);
+            var results = xorNN.predict(trainingSet);
 
             results[0].should.be.equal(predictions[0]);
             results[1].should.be.equal(predictions[1]);
@@ -33,20 +33,20 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
     });
 
     it('Training the neural network with AND operator', function () {
-        let trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
-        let predictions = [[1, 0], [1, 0], [1, 0], [0, 1]];
+        var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
+        var predictions = [[1, 0], [1, 0], [1, 0], [0, 1]];
 
-        for (let i = 0; i < functions.length; ++i) {
-            let options = {
+        for (var i = 0; i < functions.length; ++i) {
+            var options = {
                 hiddenLayers: [3],
                 iterations: 500,
                 learningRate: 0.3,
                 activation: functions[i]
             };
-            let andNN = new FeedforwardNeuralNetwork(options);
+            var andNN = new FeedforwardNeuralNetwork(options);
             andNN.train(trainingSet, predictions);
 
-            let results = andNN.predict(trainingSet);
+            var results = andNN.predict(trainingSet);
 
             (results[0][0]).should.be.greaterThan(results[0][1]);
             (results[1][0]).should.be.greaterThan(results[1][1]);
@@ -56,23 +56,23 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
     });
 
     it('Export and import', function () {
-        let trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
-        let predictions = [0, 1, 1, 1];
+        var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
+        var predictions = [0, 1, 1, 1];
 
-        for (let i = 0; i < functions.length; ++i) {
-            let options = {
+        for (var i = 0; i < functions.length; ++i) {
+            var options = {
                 hiddenLayers: [4],
                 iterations: 500,
                 learningRate: 0.3,
                 activation: functions[i]
             };
-            let orNN = new FeedforwardNeuralNetwork(options);
+            var orNN = new FeedforwardNeuralNetwork(options);
             orNN.train(trainingSet, predictions);
 
-            let model = JSON.parse(JSON.stringify(orNN));
-            let networkNN = FeedforwardNeuralNetwork.load(model);
+            var model = JSON.parse(JSON.stringify(orNN));
+            var networkNN = FeedforwardNeuralNetwork.load(model);
 
-            let results = networkNN .predict(trainingSet);
+            var results = networkNN .predict(trainingSet);
 
             (results[0]).should.be.approximately(predictions[0], 3e-1);
             (results[1]).should.be.approximately(predictions[1], 3e-1);
@@ -82,20 +82,20 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
     });
 
     it('Multiclass clasification', function () {
-        let trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
-        let predictions = [2, 0, 1, 0];
+        var trainingSet = [[0, 0], [0, 1], [1, 0], [1, 1]];
+        var predictions = [2, 0, 1, 0];
 
-        for (let i = 0; i < functions.length; ++i) {
-            let options = {
+        for (var i = 0; i < functions.length; ++i) {
+            var options = {
                 hiddenLayers: [4],
                 iterations: 300,
                 learningRate: 0.5,
                 activation: functions[i]
             };
-            let nn = new FeedforwardNeuralNetwork(options);
+            var nn = new FeedforwardNeuralNetwork(options);
             nn.train(trainingSet, predictions);
 
-            let result = nn.predict(trainingSet);
+            var result = nn.predict(trainingSet);
 
             result[0].should.be.approximately(2, 1e-1);
             result[1].should.be.approximately(0, 1e-1);
@@ -105,21 +105,21 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
     });
 
     it('Big case', function () {
-        let trainingSet = [[1, 1], [1, 2], [2, 1], [2, 2], [3, 1], [1, 3], [1, 4], [4, 1],
+        var trainingSet = [[1, 1], [1, 2], [2, 1], [2, 2], [3, 1], [1, 3], [1, 4], [4, 1],
                             [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [5, 5], [4, 5], [3, 5]];
-        let predictions = [[1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0],
+        var predictions = [[1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0],
                             [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]];
-        for (let i = 0; i < functions.length; ++i) {
-            let options = {
+        for (var i = 0; i < functions.length; ++i) {
+            var options = {
                 hiddenLayers: [20],
                 iterations: 1000,
                 learningRate: 0.1,
                 activation: functions[i]
             };
-            let nn = new FeedforwardNeuralNetwork(options);
+            var nn = new FeedforwardNeuralNetwork(options);
             nn.train(trainingSet, predictions);
 
-            let result = nn.predict([[5, 4]]);
+            var result = nn.predict([[5, 4]]);
 
             result[0][0].should.be.lessThan(result[0][1]);
         }

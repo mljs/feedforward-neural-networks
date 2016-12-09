@@ -1,7 +1,6 @@
 'use strict';
 
-let Matrix = require('ml-matrix');
-
+var Matrix = require('ml-matrix');
 
 class Utils {
     /**
@@ -15,8 +14,8 @@ class Utils {
             throw new RangeError('Rows and cols must be the same');
         }
 
-        for (let i = 0; i < A.rows; ++i) {
-            for (let j = 0; j < A.columns; ++j) {
+        for (var i = 0; i < A.rows; ++i) {
+            for (var j = 0; j < A.columns; ++j) {
                 A[i][j] += B[i][j];
             }
         }
@@ -34,8 +33,8 @@ class Utils {
             throw new RangeError('Rows and cols must be the same');
         }
 
-        for (let i = 0; i < A.rows; ++i) {
-            for (let j = 0; j < A.columns; ++j) {
+        for (var i = 0; i < A.rows; ++i) {
+            for (var j = 0; j < A.columns; ++j) {
                 A[i][j] *= B[i][j];
             }
         }
@@ -49,9 +48,9 @@ class Utils {
      * @return {Matrix}
      */
     static sumRow(matrix) {
-        let sum = Matrix.zeros(matrix.rows, 1);
-        for (let i = 0; i < matrix.rows; ++i) {
-            for (let j = 0; j < matrix.columns; ++j) {
+        var sum = Matrix.zeros(matrix.rows, 1);
+        for (var i = 0; i < matrix.rows; ++i) {
+            for (var j = 0; j < matrix.columns; ++j) {
                 sum[i][0] += matrix[i][j];
             }
         }
@@ -64,9 +63,9 @@ class Utils {
      * @return {Matrix}
      */
     static sumCol(matrix) {
-        let sum = Matrix.zeros(1, matrix.columns);
-        for (let i = 0; i < matrix.rows; ++i) {
-            for (let j = 0; j < matrix.columns; ++j) {
+        var sum = Matrix.zeros(1, matrix.columns);
+        for (var i = 0; i < matrix.rows; ++i) {
+            for (var j = 0; j < matrix.columns; ++j) {
                 sum[0][j] += matrix[i][j];
             }
         }
@@ -80,8 +79,8 @@ class Utils {
      * @return {Matrix}
      */
     static scalarMul(matrix, scalar) {
-        for (let i = 0; i < matrix.rows; ++i) {
-            for (let j = 0; j < matrix.columns; ++j) {
+        for (var i = 0; i < matrix.rows; ++i) {
+            for (var j = 0; j < matrix.columns; ++j) {
                 matrix[i][j] *= scalar;
             }
         }
@@ -95,8 +94,8 @@ class Utils {
      * @return {object}
      */
     static dictOutputs(array) {
-        let inputs = {}, outputs = {}, l = array.length, index = 0;
-        for (let i = 0; i < l; i += 1) {
+        var inputs = {}, outputs = {}, l = array.length, index = 0;
+        for (var i = 0; i < l; i += 1) {
             if (inputs[array[i]] === undefined) {
                 inputs[array[i]] = index;
                 outputs[index] = array[i];

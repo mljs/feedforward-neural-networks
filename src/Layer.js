@@ -1,8 +1,8 @@
 'use strict';
 
-let Matrix = require('ml-matrix');
+var Matrix = require('ml-matrix');
 
-let Utils = require('./Utils');
+var Utils = require('./Utils');
 const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
 
 class Layer {
@@ -52,7 +52,7 @@ class Layer {
      * @return {Matrix} output at the current layer.
      */
     forward(X) {
-        let z = X.mmul(this.W).addRowVector(this.b);
+        var z = X.mmul(this.W).addRowVector(this.b);
         z.apply(this.activationFunction);
         this.a = z.clone();
         return z;
@@ -68,7 +68,7 @@ class Layer {
         this.dW = a.transpose().mmul(delta);
         this.db = Utils.sumCol(delta);
 
-        let aCopy = a.clone();
+        var aCopy = a.clone();
         return Utils.elementWiseMul(delta.mmul(this.W.transpose()), aCopy.apply(this.derivate));
     }
 
