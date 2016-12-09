@@ -126,10 +126,6 @@ class FeedForwardNeuralNetworks {
         return outputs;
     }
 
-    score() {
-
-    }
-
     toJSON() {
         let model = {
             model: 'FNN',

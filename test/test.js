@@ -11,12 +11,12 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
 
     it('Training the neural network with XOR operator', function () {
         let trainingSet = new Matrix([[0, 0], [0, 1], [1, 0], [1, 1]]);
-        let predictions = [0, 1, 1, 0];
+        let predictions = [false, true, true, false];
 
         for (let i = 0; i < functions.length; ++i) {
             let options = {
                 hiddenLayers: [4],
-                iterations: 1000,
+                iterations: 500,
                 learningRate: 0.3,
                 activation: functions[i]
             };
@@ -111,8 +111,8 @@ describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
                             [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]];
         for (let i = 0; i < functions.length; ++i) {
             let options = {
-                hiddenLayers: [10],
-                iterations: 500,
+                hiddenLayers: [20],
+                iterations: 1000,
                 learningRate: 0.1,
                 activation: functions[i]
             };
