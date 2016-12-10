@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var Layer = require("./Layer");
+var Layer = require('./Layer');
 
 class OutputLayer extends Layer {
     constructor(options) {
@@ -12,7 +12,7 @@ class OutputLayer extends Layer {
     }
 
     static load(model) {
-        if(model.model !== "Layer") {
+        if (model.model !== 'Layer') {
             throw new RangeError('the current model is not a Layer model');
         }
 

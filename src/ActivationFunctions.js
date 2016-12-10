@@ -5,21 +5,21 @@ function logistic(val) {
 }
 
 function expELU(val, param) {
-    return val < 0 ? param * (Math.exp(val) - 1) : val
+    return val < 0 ? param * (Math.exp(val) - 1) : val;
 }
 
 function softExponential(val, param) {
-    if(a < 0) {
+    if (param < 0) {
         return -Math.log(1 - param * (val + param)) / param;
     }
-    if(a > 0) {
+    if (param > 0) {
         return ((Math.exp(param * val) - 1) / param) + param;
     }
-    return val
+    return val;
 }
 
 function softExponentialPrime(val, param) {
-    if(param < 0) {
+    if (param < 0) {
         return 1 / (1 - param * (param + val));
     } else {
         return Math.exp(param * val);

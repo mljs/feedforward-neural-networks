@@ -148,12 +148,12 @@ class FeedForwardNeuralNetworks {
 
         // remember, the last delta doesn't matter
         var delta = probabilities;
-        for (var i = this.model.length - 1; i >= 0; --i) {
+        for (i = this.model.length - 1; i >= 0; --i) {
             var a = i > 0 ? this.model[i - 1].a : features;
             delta = this.model[i].backpropagation(delta, a);
         }
 
-        for (var i = 0; i < this.model.length; ++i) {
+        for (i = 0; i < this.model.length; ++i) {
             this.model[i].update();
         }
     }
