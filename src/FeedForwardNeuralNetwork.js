@@ -12,12 +12,14 @@ class FeedForwardNeuralNetworks {
     /**
      * Create a new Feedforword neural network model.
      * @param {object} options
-     * @param {Array} [options.hiddenLayers] - Array that contains the sizes of the hidden layers.
-     * @oaram {number} [options.iterations] - Number of iterations at the training step.
-     * @param {number} [options.learningRate] - Learning rate of the neural net (also known as epsilon).
-     * @poram {number} [options.regularization] - Regularization parameter af the neural net.
-     * @poram {string} [options.activation] - activation function to be used. (options: 'tanh'(default),
+     * @param {Array} [options.hiddenLayers=[10]] - Array that contains the sizes of the hidden layers.
+     * @oaram {number} [options.iterations=50] - Number of iterations at the training step.
+     * @param {number} [options.learningRate=0.01] - Learning rate of the neural net (also known as epsilon).
+     * @poram {number} [options.regularization=0.01] - Regularization parameter af the neural net.
+     * @poram {string} [options.activation='tanh'] - activation function to be used. (options: 'tanh'(default),
      * 'identity', 'logistic', 'arctan', 'softsign', 'relu', 'softplus', 'bent', 'sinusoid', 'sinc', 'gaussian').
+     * (single-parametric options: 'parametric-relu', 'exponential-relu', 'soft-exponential').
+     * @param {number} [options.activationParam=1] - if the selected activation function needs a parameter.
      */
     constructor(options) {
         if (options === undefined) options = {};
@@ -29,6 +31,7 @@ class FeedForwardNeuralNetworks {
             this.regularization = options.regularization;
             this.dicts = options.dicts;
             this.activation = options.activation;
+            this.activationParam = options.activationParam;
             this.model = new Array(options.layers.length);
 
             for (var i = 0; i < this.model.length - 1; ++i) {
@@ -45,6 +48,7 @@ class FeedForwardNeuralNetworks {
             this.regularization = options.regularization === undefined ? 0.01 : options.regularization;
 
             this.activation = options.activation === undefined ? 'tanh' : options.activation;
+            this.activationParam = options.activationParam === undefined ? 1 : options.activationParam;
             if (!(this.activation in Object.keys(ACTIVATION_FUNCTIONS))) {
                 //console.warn("Setting default activation function: 'tanh'");
                 this.activation = 'tanh';
@@ -66,6 +70,7 @@ class FeedForwardNeuralNetworks {
             inputSize: inputSize,
             outputSize: this.hiddenLayers[0],
             activation: this.activation,
+            activationParam: this.activationParam,
             regularization: this.regularization,
             epsilon: this.learningRate
         });
@@ -76,6 +81,7 @@ class FeedForwardNeuralNetworks {
                 inputSize: this.hiddenLayers[i - 1],
                 outputSize: this.hiddenLayers[i],
                 activation: this.activation,
+                activationParam: this.activationParam,
                 regularization: this.regularization,
                 epsilon: this.learningRate
             });
@@ -86,6 +92,7 @@ class FeedForwardNeuralNetworks {
             inputSize: this.hiddenLayers[this.hiddenLayers.length - 1],
             outputSize: outputSize,
             activation: this.activation,
+            activationParam: this.activationParam,
             regularization: this.regularization,
             epsilon: this.learningRate
         });
@@ -179,6 +186,7 @@ class FeedForwardNeuralNetworks {
             learningRate: this.learningRate,
             regularization: this.regularization,
             activation: this.activation,
+            activationParam: this.activationParam,
             dicts: this.dicts,
             layers: new Array(this.model.length)
         };

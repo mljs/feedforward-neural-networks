@@ -14,6 +14,7 @@ class Layer {
      * @param {number} [options.regularization] - Regularization parameter.
      * @param {number} [options.epsilon] - Learning rate parameter.
      * @param {string} [options.activation] - Activation function parameter from the FeedForwardNeuralNetwork class.
+     * @param {number} [options.activationParam] - Activation parameter if needed.
      */
     constructor(options) {
         this.inputSize = options.inputSize;
@@ -21,12 +22,19 @@ class Layer {
         this.regularization = options.regularization;
         this.epsilon = options.epsilon;
         this.activation = options.activation;
+        this.activationParam = options.activationParam;
+
+        var selectedFunction = ACTIVATION_FUNCTIONS[options.activation];
+        var params = selectedFunction.activation.length;
+
+        var actFunction = params > 1 ? val => selectedFunction.activation(val, options.activationParam) : selectedFunction.activation;
+        var derFunction = params > 1 ? val => selectedFunction.derivate(val, options.activationParam) : selectedFunction.derivate;
 
         this.activationFunction = function (i, j) {
-            this[i][j] = ACTIVATION_FUNCTIONS[options.activation].activation(this[i][j]);
+            this[i][j] = actFunction(this[i][j]);
         };
         this.derivate = function (i, j) {
-            this[i][j] = ACTIVATION_FUNCTIONS[options.activation].derivate(this[i][j]);
+            this[i][j] = derFunction(this[i][j]);
         };
 
         if (options.model) {

@@ -5,7 +5,7 @@ var Matrix = require('ml-matrix');
 var FeedforwardNeuralNetwork = require('..');
 var ACTIVATION_FUNCTIONS = require('../src/ActivationFunctions');
 
-describe('Feedforward Neural Networks using sigmoid nonlinearity', function () {
+describe('Feedforward Neural Networks', function () {
 
     var functions = Object.keys(ACTIVATION_FUNCTIONS);
 

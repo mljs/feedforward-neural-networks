@@ -4,6 +4,28 @@ function logistic(val) {
     return 1 / (1 + Math.exp(-val));
 }
 
+function expELU(val, param) {
+    return val < 0 ? param * (Math.exp(val) - 1) : val
+}
+
+function softExponential(val, param) {
+    if(a < 0) {
+        return -Math.log(1 - param * (val + param)) / param;
+    }
+    if(a > 0) {
+        return ((Math.exp(param * val) - 1) / param) + param;
+    }
+    return val
+}
+
+function softExponentialPrime(val, param) {
+    if(param < 0) {
+        return 1 / (1 - param * (param + val));
+    } else {
+        return Math.exp(param * val);
+    }
+}
+
 const ACTIVATION_FUNCTIONS = {
     'tanh': {
         activation: Math.tanh,
@@ -48,6 +70,18 @@ const ACTIVATION_FUNCTIONS = {
     'gaussian': {
         activation: val => Math.exp(-(val * val)),
         derivate: val => -2 * val * Math.exp(-(val * val))
+    },
+    'parametric-relu': {
+        activation: (val, param) => val < 0 ? param * val : val,
+        derivate: (val, param) => val < 0 ? param : 1
+    },
+    'exponential-elu': {
+        activation: expELU,
+        derivate: (val, param) => val < 0 ? expELU(val, param) + param : 1
+    },
+    'soft-exponential': {
+        activation: softExponential,
+        derivate: softExponentialPrime
     }
 };
 
