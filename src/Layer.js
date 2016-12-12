@@ -3,7 +3,7 @@
 var Matrix = require('ml-matrix');
 
 var Utils = require('./Utils');
-const ACTIVATION_FUNCTIONS = require('./ActivationFunctions');
+const ACTIVATION_FUNCTIONS = require('./activationFunctions');
 
 class Layer {
     /**
@@ -73,20 +73,20 @@ class Layer {
      * @return {Matrix} the new delta values for the next layer.
      */
     backpropagation(delta, a) {
-        this.dW = a.transpose().mmul(delta);
+        this.dW = a.transposeView().mmul(delta);
         this.db = Utils.sumCol(delta);
 
         var aCopy = a.clone();
-        return Utils.elementWiseMul(delta.mmul(this.W.transpose()), aCopy.apply(this.derivate));
+        return delta.mmul(this.W.transposeView()).mul(aCopy.apply(this.derivate));
     }
 
     /**
      * Function that updates the weights at the current layer with the derivatives.
      */
     update() {
-        Utils.matrixSum(this.dW, Utils.scalarMul(this.W.clone(), this.regularization));
-        Utils.matrixSum(this.W, Utils.scalarMul(this.dW, -this.epsilon));
-        Utils.matrixSum(this.b, Utils.scalarMul(this.db, -this.epsilon));
+        this.dW.add(this.W.clone().mul(this.regularization));
+        this.W.add(this.dW.mul(-this.epsilon));
+        this.b.add(this.db.mul(-this.epsilon));
     }
 
     /**

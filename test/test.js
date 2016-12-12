@@ -3,7 +3,7 @@
 var Matrix = require('ml-matrix');
 
 var FeedforwardNeuralNetwork = require('..');
-var ACTIVATION_FUNCTIONS = require('../src/ActivationFunctions');
+var ACTIVATION_FUNCTIONS = require('../src/activationFunctions');
 
 describe('Feedforward Neural Networks', function () {
 
