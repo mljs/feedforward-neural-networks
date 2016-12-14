@@ -2,7 +2,7 @@
 
 var Matrix = require('ml-matrix');
 
-var Utils = require('./Utils');
+var Utils = require('./utils');
 const ACTIVATION_FUNCTIONS = require('./activationFunctions');
 
 class Layer {

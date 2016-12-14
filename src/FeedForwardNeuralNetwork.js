@@ -4,7 +4,7 @@ var Matrix = require('ml-matrix');
 
 var Layer = require('./Layer');
 var OutputLayer = require('./OutputLayer');
-var Utils = require('./Utils');
+var Utils = require('./utils');
 const ACTIVATION_FUNCTIONS = require('./activationFunctions');
 
 class FeedForwardNeuralNetworks {
