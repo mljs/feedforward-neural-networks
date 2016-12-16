@@ -1,10 +1,10 @@
 'use strict';
 
-var Matrix = require('ml-matrix');
+const Matrix = require('ml-matrix');
 
-var Layer = require('./Layer');
-var OutputLayer = require('./OutputLayer');
-var Utils = require('./utils');
+const Layer = require('./Layer');
+const OutputLayer = require('./OutputLayer');
+const Utils = require('./utils');
 const ACTIVATION_FUNCTIONS = require('./activationFunctions');
 
 class FeedForwardNeuralNetworks {
@@ -22,7 +22,7 @@ class FeedForwardNeuralNetworks {
      * @param {number} [options.activationParam=1] - if the selected activation function needs a parameter.
      */
     constructor(options) {
-        if (options === undefined) options = {};
+        options = options || {};
         if (options.model) {
             // load network
             this.hiddenLayers = options.hiddenLayers;
@@ -50,7 +50,6 @@ class FeedForwardNeuralNetworks {
             this.activation = options.activation === undefined ? 'tanh' : options.activation;
             this.activationParam = options.activationParam === undefined ? 1 : options.activationParam;
             if (!(this.activation in Object.keys(ACTIVATION_FUNCTIONS))) {
-                //console.warn("Setting default activation function: 'tanh'");
                 this.activation = 'tanh';
             }
         }
