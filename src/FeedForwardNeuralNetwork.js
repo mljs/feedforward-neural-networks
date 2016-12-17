@@ -56,6 +56,7 @@ class FeedForwardNeuralNetworks {
     }
 
     /**
+     * @private
      * Function that build and initialize the neural net.
      * @param {number} inputSize - total of features to fit.
      * @param {number} outputSize - total of labels of the prediction set.
@@ -118,6 +119,7 @@ class FeedForwardNeuralNetworks {
     }
 
     /**
+     * @private
      * Propagate the input(training set) and retrives the probabilities of each class.
      * @param {Matrix} X
      * @return {Matrix} probabilities of each class.
@@ -134,6 +136,7 @@ class FeedForwardNeuralNetworks {
     }
 
     /**
+     * @private
      * Function that applies the backpropagation algorithm on each layer of the network
      * in order to fit the features and labels.
      * @param {Matrix} features

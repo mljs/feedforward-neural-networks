@@ -3,6 +3,7 @@
 var Matrix = require('ml-matrix');
 
 /**
+ * @private
  * Retrieves the sum at each row of the given matrix.
  * @param {Matrix} matrix
  * @return {Matrix}
@@ -18,6 +19,7 @@ function sumRow(matrix) {
 }
 
 /**
+ * @private
  * Retrieves the sum at each column of the given matrix.
  * @param {Matrix} matrix
  * @return {Matrix}
@@ -33,6 +35,7 @@ function sumCol(matrix) {
 }
 
 /**
+ * @private
  * Method that given an array of labels(predictions), returns two dictionaries, one to transform from labels to
  * numbers and other in the reverse way
  * @param {Array} array

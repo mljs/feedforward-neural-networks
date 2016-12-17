@@ -7,6 +7,7 @@ const ACTIVATION_FUNCTIONS = require('./activationFunctions');
 
 class Layer {
     /**
+     * @private
      * Create a new layer with the given options
      * @param {object} options
      * @param {number} [options.inputSize] - Number of conections that enter the neurons.
@@ -55,6 +56,7 @@ class Layer {
     }
 
     /**
+     * @private
      * propagate the given input through the current layer.
      * @param {Matrix} X - input.
      * @return {Matrix} output at the current layer.
@@ -67,6 +69,7 @@ class Layer {
     }
 
     /**
+     * @private
      * apply backpropagation algorithm at the current layer
      * @param {Matrix} delta - delta values estimated at the following layer.
      * @param {Matrix} a - 'a' values from the following layer.
@@ -81,6 +84,7 @@ class Layer {
     }
 
     /**
+     * @private
      * Function that updates the weights at the current layer with the derivatives.
      */
     update() {
@@ -90,6 +94,7 @@ class Layer {
     }
 
     /**
+     * @private
      * Export the current layer to JSON.
      * @return {object} model
      */
@@ -107,6 +112,7 @@ class Layer {
     }
 
     /**
+     * @private
      * Creates a new Layer with the given model.
      * @param {object} model
      * @return {Layer}
