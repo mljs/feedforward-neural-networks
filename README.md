@@ -5,30 +5,16 @@
   [![David deps][david-image]][david-url]
   [![npm download][download-image]][download-url]
 
-A implementation of feedforward neural networks in javascript based on the mrbo answer
+A implementation of feedforward neural networks in javascript based on wildml implementation
 found here:
 
-[Implementation] (http://stackoverflow.com/questions/9951487/implementing-a-neural-network-in-java-training-and-backpropagation-issues)
+[Implementation] (http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/)
 
-## Methods
+## Installation
 
-### new FNN(X, Y)
+`$ npm install ml-fnn`
 
-### train(options)
-
-__Options__
-
-* `hiddenLayers` - Array with the size of each hidden layer in the FNN.
-* `hiddenOptions` - (optional) Array with the options for each layer of the FNN specifiying activating functions of the form `{nonLinearity:'sigmoid' or 'tanh'}`.
-* `iterations` - Maximum number of iterations of the algorithm.
-* `learningRate` - The learning rate (number).
-* `momentum` - The regularization term (number).
-
-### predict(dataset)
-
-### toJSON()
-
-### FNN.load(model)
+## [API Documentation](https://mljs.github.io/feedforward-neural-networks/)
 
 ## License
 
