@@ -11,9 +11,10 @@ class FeedForwardNeuralNetworks {
 
     /**
      * Create a new Feedforword neural network model.
-     * @param {object} options
+     * @class FeedForwardNeuralNetworks
+     * @param {object} [options]
      * @param {Array} [options.hiddenLayers=[10]] - Array that contains the sizes of the hidden layers.
-     * @oaram {number} [options.iterations=50] - Number of iterations at the training step.
+     * @param {number} [options.iterations=50] - Number of iterations at the training step.
      * @param {number} [options.learningRate=0.01] - Learning rate of the neural net (also known as epsilon).
      * @param {number} [options.regularization=0.01] - Regularization parameter af the neural net.
      * @param {string} [options.activation='tanh'] - activation function to be used. (options: 'tanh'(default),
@@ -40,15 +41,14 @@ class FeedForwardNeuralNetworks {
             this.model[this.model.length - 1] = OutputLayer.load(options.layers[this.model.length - 1]);
         } else {
             // default constructor
-            this.hiddenLayers = options.hiddenLayers === undefined ? [10] : options.hiddenLayers;
-            this.iterations = options.iterations === undefined ? 50 : options.iterations;
+            this.hiddenLayers = options.hiddenLayers || [10];
+            this.iterations = options.iterations || 50;
 
-            this.learningRate = options.learningRate === undefined ? 0.01 : options.learningRate;
-            //this.momentum = options.momentum === undefined ? 0.1 : options.momentum;
-            this.regularization = options.regularization === undefined ? 0.01 : options.regularization;
+            this.learningRate = options.learningRate || 0.01;
+            this.regularization = options.regularization || 0.01;
 
-            this.activation = options.activation === undefined ? 'tanh' : options.activation;
-            this.activationParam = options.activationParam === undefined ? 1 : options.activationParam;
+            this.activation = options.activation || 'tanh';
+            this.activationParam = options.activationParam || 1;
             if (!(this.activation in Object.keys(ACTIVATION_FUNCTIONS))) {
                 this.activation = 'tanh';
             }
@@ -177,7 +177,7 @@ class FeedForwardNeuralNetworks {
     }
 
     /**
-     * Export the current model to JSOM.
+     * Export the current model to JSON.
      * @return {object} model
      */
     toJSON() {

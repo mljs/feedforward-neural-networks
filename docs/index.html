@@ -25,26 +25,6 @@
               
                 
                 <li><a
-                  href='#constructor'
-                  class="">
-                  constructor
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#predict'
-                  class="">
-                  predict
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
                   href='#tojson'
                   class="">
                   toJSON
@@ -55,9 +35,29 @@
               
                 
                 <li><a
+                  href='#feedforwardneuralnetworks'
+                  class="">
+                  FeedForwardNeuralNetworks
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#train'
                   class="">
                   train
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#predict'
+                  class="">
+                  predict
                   
                 </a>
                 
@@ -88,200 +88,26 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='constructor'>
-      constructor
-    </h3>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/4d394d5b96316a1d4f520d2620fbe83cf63c0e5f/src/FeedForwardNeuralNetwork.js#L24-L56'>
-      <span>src/FeedForwardNeuralNetwork.js</span>
-      </a>
-    
-  </div>
-  
-
-  <p>Create a new Feedforword neural network model.</p>
-
-
-  <div class='pre p1 fill-light mt0'>constructor(options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> 
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>options.hiddenLayers</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>]</code>
-                  
-                    (default <code>[10]</code>)
-                  </td>
-                  <td class='break-word'><span>Array that contains the sizes of the hidden layers.
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>options.learningRate</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</code>
-                  
-                    (default <code>0.01</code>)
-                  </td>
-                  <td class='break-word'><span>Learning rate of the neural net (also known as epsilon).
-</span></td>
-                </tr>
-              
-                <tr>
-                  <td class='break-word'><span class='code bold'>options.activationParam</span> <code class='quiet'>[<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>]</code>
-                  
-                    (default <code>1</code>)
-                  </td>
-                  <td class='break-word'><span>if the selected activation function needs a parameter.
-</span></td>
-                </tr>
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='predict'>
-      predict
-    </h3>
-    
-    
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/4d394d5b96316a1d4f520d2620fbe83cf63c0e5f/src/FeedForwardNeuralNetwork.js#L168-L177'>
-      <span>src/FeedForwardNeuralNetwork.js</span>
-      </a>
-    
-  </div>
-  
-
-  <p>Predict the output given the feature set.</p>
-
-
-  <div class='pre p1 fill-light mt0'>predict(features: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | Matrix)): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>features</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | Matrix))</code> 
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
-        
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
     <h3 class='fl m0' id='tojson'>
       toJSON
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/4d394d5b96316a1d4f520d2620fbe83cf63c0e5f/src/FeedForwardNeuralNetwork.js#L183-L201'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/420915610813d826982c4f810bfbbf9aac5f77b4/src/FeedForwardNeuralNetwork.js#L183-L201'>
       <span>src/FeedForwardNeuralNetwork.js</span>
       </a>
     
   </div>
   
 
-  <p>Export the current model to JSOM.</p>
+  <p>Export the current model to JSON.</p>
 
 
   <div class='pre p1 fill-light mt0'>toJSON(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
-
+  
   
 
+  
   
   
   
@@ -321,25 +147,26 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='train'>
-      train
+    <h3 class='fl m0' id='feedforwardneuralnetworks'>
+      FeedForwardNeuralNetworks
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/4d394d5b96316a1d4f520d2620fbe83cf63c0e5f/src/FeedForwardNeuralNetwork.js#L106-L119'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/420915610813d826982c4f810bfbbf9aac5f77b4/src/FeedForwardNeuralNetwork.js#L25-L56'>
       <span>src/FeedForwardNeuralNetwork.js</span>
       </a>
     
   </div>
   
 
-  <p>Train the neural net with the given features and labels.</p>
+  <p>Create a new Feedforword neural network model.</p>
 
 
-  <div class='pre p1 fill-light mt0'>train(features: (Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>), labels: (Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>))</div>
-
+  <div class='pre p1 fill-light mt0'>new FeedForwardNeuralNetworks(options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
+  
   
   
   
@@ -352,14 +179,152 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>features</span> <code class='quiet'>((Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>))</code> 
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>options.hiddenLayers</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>
+                  
+                    (default <code>[10]</code>)
+                  </td>
+                  <td class='break-word'><span>Array that contains the sizes of the hidden layers.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>options.iterations</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>50</code>)
+                  </td>
+                  <td class='break-word'><span>Number of iterations at the training step.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>options.learningRate</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>0.01</code>)
+                  </td>
+                  <td class='break-word'><span>Learning rate of the neural net (also known as epsilon).
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>options.regularization</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>0.01</code>)
+                  </td>
+                  <td class='break-word'><span>Regularization parameter af the neural net.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>options.activation</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  
+                    (default <code>&#39;tanh&#39;</code>)
+                  </td>
+                  <td class='break-word'><span>activation function to be used. (options: 'tanh'(default),
+'identity', 'logistic', 'arctan', 'softsign', 'relu', 'softplus', 'bent', 'sinusoid', 'sinc', 'gaussian').
+(single-parametric options: 'parametric-relu', 'exponential-relu', 'soft-exponential').
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>options.activationParam</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>1</code>)
+                  </td>
+                  <td class='break-word'><span>if the selected activation function needs a parameter.
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='train'>
+      train
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/420915610813d826982c4f810bfbbf9aac5f77b4/src/FeedForwardNeuralNetwork.js#L106-L119'>
+      <span>src/FeedForwardNeuralNetwork.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Train the neural net with the given features and labels.</p>
+
+
+  <div class='pre p1 fill-light mt0'>train(features: (Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>), labels: (Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>))</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>features</span> <code class='quiet'>((Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>))</code>
+	    
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>labels</span> <code class='quiet'>((Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>))</code> 
+            <span class='code bold'>labels</span> <code class='quiet'>((Matrix | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>))</code>
+	    
           </div>
           
         </div>
@@ -390,25 +355,26 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='load'>
-      load
+    <h3 class='fl m0' id='predict'>
+      predict
     </h3>
     
     
-      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/4d394d5b96316a1d4f520d2620fbe83cf63c0e5f/src/FeedForwardNeuralNetwork.js#L208-L214'>
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/420915610813d826982c4f810bfbbf9aac5f77b4/src/FeedForwardNeuralNetwork.js#L168-L177'>
       <span>src/FeedForwardNeuralNetwork.js</span>
       </a>
     
   </div>
   
 
-  <p>Load a Feedforward Neural Network with the current model.</p>
+  <p>Predict the output given the feature set.</p>
 
 
-  <div class='pre p1 fill-light mt0'>load(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): FeedForwardNeuralNetworks</div>
-
+  <div class='pre p1 fill-light mt0'>predict(features: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | Matrix)): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></div>
+  
   
 
+  
   
   
   
@@ -421,7 +387,80 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>model</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> 
+            <span class='code bold'>features</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> | Matrix))</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='load'>
+      load
+    </h3>
+    
+    
+      <a class='fr fill-darken0 round round pad1x quiet h5' href='https://github.com/mljs/feedforward-neural-networks/blob/420915610813d826982c4f810bfbbf9aac5f77b4/src/FeedForwardNeuralNetwork.js#L208-L214'>
+      <span>src/FeedForwardNeuralNetwork.js</span>
+      </a>
+    
+  </div>
+  
+
+  <p>Load a Feedforward Neural Network with the current model.</p>
+
+
+  <div class='pre p1 fill-light mt0'>load(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): FeedForwardNeuralNetworks</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>model</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    
           </div>
           
         </div>
