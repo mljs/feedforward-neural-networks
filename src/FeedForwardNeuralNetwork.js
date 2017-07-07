@@ -15,8 +15,8 @@ class FeedForwardNeuralNetworks {
      * @param {Array} [options.hiddenLayers=[10]] - Array that contains the sizes of the hidden layers.
      * @oaram {number} [options.iterations=50] - Number of iterations at the training step.
      * @param {number} [options.learningRate=0.01] - Learning rate of the neural net (also known as epsilon).
-     * @poram {number} [options.regularization=0.01] - Regularization parameter af the neural net.
-     * @poram {string} [options.activation='tanh'] - activation function to be used. (options: 'tanh'(default),
+     * @param {number} [options.regularization=0.01] - Regularization parameter af the neural net.
+     * @param {string} [options.activation='tanh'] - activation function to be used. (options: 'tanh'(default),
      * 'identity', 'logistic', 'arctan', 'softsign', 'relu', 'softplus', 'bent', 'sinusoid', 'sinc', 'gaussian').
      * (single-parametric options: 'parametric-relu', 'exponential-relu', 'soft-exponential').
      * @param {number} [options.activationParam=1] - if the selected activation function needs a parameter.
