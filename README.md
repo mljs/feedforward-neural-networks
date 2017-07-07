@@ -5,10 +5,7 @@
   [![David deps][david-image]][david-url]
   [![npm download][download-image]][download-url]
 
-A implementation of feedforward neural networks in javascript based on wildml implementation
-found here:
-
-[Implementation] (http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/)
+A implementation of feedforward neural networks in javascript based on wildml [implementation](http://www.wildml.com/2015/09/implementing-a-neural-network-from-scratch/).
 
 ## Installation
 
