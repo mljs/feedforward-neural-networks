@@ -1,3 +1,18 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/mljs/feedforward-neural-networks/compare/v3.0.0...v4.0.0) (2017-07-21)
+
+
+### Chores
+
+* remove support for Node 4 ([a0d74da](https://github.com/mljs/feedforward-neural-networks/commit/a0d74da))
+
+
+### BREAKING CHANGES
+
+* Removed support for Node 4
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/mljs/feedforward-neural-networks/compare/v2.1.1...v3.0.0) (2016-12-17)
 
