@@ -1,6 +1,6 @@
 'use strict';
 
-const Matrix = require('ml-matrix');
+const Matrix = require('ml-matrix').Matrix;
 
 const Layer = require('./Layer');
 const OutputLayer = require('./OutputLayer');

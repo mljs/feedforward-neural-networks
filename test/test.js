@@ -1,6 +1,6 @@
 'use strict';
 
-var Matrix = require('ml-matrix');
+var Matrix = require('ml-matrix').Matrix;
 
 var FeedforwardNeuralNetwork = require('..');
 var ACTIVATION_FUNCTIONS = require('../src/activationFunctions');
