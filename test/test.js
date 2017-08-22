@@ -127,6 +127,30 @@ describe('Feedforward Neural Networks', function () {
         }
     });
 
+    it('Big case - many predictions', function () {
+        this.timeout(10000);
+
+        var trainingSet = [[1, 1], [1, 2], [2, 1], [2, 2], [3, 1], [1, 3], [1, 4], [4, 1],
+            [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [5, 5], [4, 5], [3, 5]];
+        var predictions = [[1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0],
+            [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]];
+        for (var i = 0; i < functions.length; ++i) {
+            var options = {
+                hiddenLayers: [20],
+                iterations: 1000,
+                learningRate: 0.01,
+                activation: functions[i]
+            };
+            var nn = new FeedforwardNeuralNetwork(options);
+            nn.train(trainingSet, predictions);
+
+            var result = nn.predict([[5, 4], [4, 2], [5, 3]]);
+            result[0][0].should.be.lessThan(result[0][1]);
+            result[1][1].should.be.lessThan(result[1][0]);
+            result[2][0].should.be.lessThan(result[2][1]);
+        }
+    });
+
     it('Big test case 2', function () {
         // see https://gist.github.com/jajoe/cb53d7b1378a76cc6896e660f83b50d2, this test case should work
         this.timeout(10000);
