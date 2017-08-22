@@ -104,13 +104,16 @@ class FeedForwardNeuralNetworks {
      * @param {Matrix|Array} labels
      */
     train(features, labels) {
+
         features = Matrix.checkMatrix(features);
         this.dicts = Utils.dictOutputs(labels);
 
         var inputSize = features.columns;
         var outputSize = Object.keys(this.dicts.inputs).length;
 
-        this.buildNetwork(inputSize, outputSize);
+        if (!this.model) {
+            this.buildNetwork(inputSize, outputSize);
+        }
 
         for (var i = 0; i < this.iterations; ++i) {
             var probabilities = this.propagate(features);
@@ -127,7 +130,6 @@ class FeedForwardNeuralNetworks {
     propagate(X) {
         var input = X;
         for (var i = 0; i < this.model.length; ++i) {
-            //console.log(i);
             input = this.model[i].forward(input);
         }
 

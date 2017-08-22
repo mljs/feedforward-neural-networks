@@ -126,4 +126,53 @@ describe('Feedforward Neural Networks', function () {
             result[0][0].should.be.lessThan(result[0][1]);
         }
     });
+
+    it('Big case - many predictions', function () {
+        this.timeout(10000);
+
+        var trainingSet = [[1, 1], [1, 2], [2, 1], [2, 2], [3, 1], [1, 3], [1, 4], [4, 1],
+            [6, 1], [6, 2], [6, 3], [6, 4], [6, 5], [5, 5], [4, 5], [3, 5]];
+        var predictions = [[1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0],
+            [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]];
+        for (var i = 0; i < functions.length; ++i) {
+            var options = {
+                hiddenLayers: [20],
+                iterations: 1000,
+                learningRate: 0.01,
+                activation: functions[i]
+            };
+            var nn = new FeedforwardNeuralNetwork(options);
+            nn.train(trainingSet, predictions);
+
+            var result = nn.predict([[5, 4], [4, 2], [5, 3]]);
+            result[0][0].should.be.lessThan(result[0][1]);
+            result[1][1].should.be.lessThan(result[1][0]);
+            result[2][0].should.be.lessThan(result[2][1]);
+        }
+    });
+
+    it.skip('Big test case 2', function () {
+        // see https://gist.github.com/jajoe/cb53d7b1378a76cc6896e660f83b50d2, this test case should work
+        this.timeout(10000);
+
+        var X = [[0, 255, 255, 255, 0], [255, 0, 0, 0, 255], [255, 255, 0, 0, 0], [255, 0, 0, 0, 0], [0, 255, 255, 255, 255], [0, 255, 255, 0, 0], [0, 255, 0, 0, 255], [0, 0, 255, 0, 255], [255, 255, 0, 0, 255], [255, 0, 0, 0, 255], [255, 255, 0, 255, 0], [0, 0, 0, 255, 0], [255, 0, 0, 255, 0], [255, 0, 0, 255, 255], [0, 0, 255, 0, 255]];
+        var y = [[0, 1], [1, 0], [1, 1], [1, 1], [1, 1], [0, 1], [0, 0], [0, 0], [1, 0], [1, 0], [0, 0], [0, 1], [0, 0], [1, 0], [0, 0]];
+        var Xtest = [[255, 0, 255, 255, 255], [0, 255, 0, 0, 0], [255, 0, 255, 255, 0], [0, 0, 255, 255, 255]];
+        var ytest = [[1, 0], [0, 1], [0, 0], [1, 1]];
+        var options = {
+            hiddenLayers: [100],
+            iterations: 10000,
+            learningRate: 0.001,
+            activation: 'logistic'
+        };
+        var nn = new FeedforwardNeuralNetwork(options);
+        nn.train(X, y);
+
+        var result = nn.predict(Xtest);
+        for (let i = 0; i < ytest.length; i++) {
+            for (let j = 0; j < ytest[0].length; j++) {
+                result[i][j].should.be.approximately(ytest[i][j], 1e-1);
+            }
+        }
+    });
 });
