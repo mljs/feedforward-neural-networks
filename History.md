@@ -1,3 +1,27 @@
+# [5.0.0](https://github.com/mljs/feedforward-neural-networks/compare/v4.0.0...v5.0.0) (2019-06-29)
+
+
+### Bug Fixes
+
+* test 'Big test cas 2' is ignored, because won't never work with current implementation ([5a92c34](https://github.com/mljs/feedforward-neural-networks/commit/5a92c34))
+
+
+### chore
+
+* update dependencies and remove support for Node.js 6 ([bb4516d](https://github.com/mljs/feedforward-neural-networks/commit/bb4516d))
+
+
+### Features
+
+* Add the possibility to retrain a pre-trained model ([db995e4](https://github.com/mljs/feedforward-neural-networks/commit/db995e4))
+
+
+### BREAKING CHANGES
+
+* Node.js 6 is no longer supported.
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/mljs/feedforward-neural-networks/compare/v3.0.0...v4.0.0) (2017-07-21)
 
