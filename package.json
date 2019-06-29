@@ -2,17 +2,19 @@
   "name": "ml-fnn",
   "version": "4.0.0",
   "description": "feedforward neural networks library",
-  "main": "src/FeedForwardNeuralNetwork.js",
-  "directories": {
-    "lib": "src",
-    "test": "test"
-  },
+  "main": "FeedForwardNeuralNetwork.js",
+  "files": [
+    "src",
+    "FeedForwardNeuralNetwork.js"
+  ],
   "scripts": {
-    "eslint": "eslint src test",
+    "compile": "rollup -c",
+    "eslint": "eslint src",
     "eslint-fix": "npm run eslint -- --fix",
-    "test": "npm run test-mocha && npm run eslint",
-    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- --require should --reporter dot --recursive",
-    "test-mocha": "mocha --require should --reporter mocha-better-spec-reporter"
+    "prepublishOnly": "npm run compile",
+    "test": "npm run test-coverage && npm run eslint",
+    "test-only": "jest",
+    "test-coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -32,14 +34,15 @@
   },
   "homepage": "https://github.com/mljs/feedforward-neural-networks",
   "dependencies": {
-    "ml-matrix": "^5.0.0"
+    "ml-matrix": "^6.1.2"
   },
   "devDependencies": {
-    "eslint": "^4.1.1",
-    "eslint-config-cheminfo": "^1.8.0",
-    "eslint-plugin-no-only-tests": "^2.0.0",
-    "mocha": "^3.4.2",
-    "mocha-better-spec-reporter": "^3.1.0",
-    "should": "^11.2.1"
+    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "eslint": "^6.0.1",
+    "eslint-config-cheminfo": "^1.20.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jest": "^22.7.1",
+    "jest": "^24.8.0",
+    "rollup": "^1.16.3"
   }
 }

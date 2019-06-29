@@ -1,23 +1,19 @@
-'use strict';
+import { Layer } from './Layer';
 
-var Layer = require('./Layer');
+export class OutputLayer extends Layer {
+  constructor(options) {
+    super(options);
 
-class OutputLayer extends Layer {
-    constructor(options) {
-        super(options);
+    this.activationFunction = function (i, j) {
+      this.set(i, j, Math.exp(this.get(i, j)));
+    };
+  }
 
-        this.activationFunction = function (i, j) {
-            this[i][j] = Math.exp(this[i][j]);
-        };
+  static load(model) {
+    if (model.model !== 'Layer') {
+      throw new RangeError('the current model is not a Layer model');
     }
 
-    static load(model) {
-        if (model.model !== 'Layer') {
-            throw new RangeError('the current model is not a Layer model');
-        }
-
-        return new OutputLayer(model);
-    }
+    return new OutputLayer(model);
+  }
 }
-
-module.exports = OutputLayer;
